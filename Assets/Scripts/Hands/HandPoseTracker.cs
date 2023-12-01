@@ -25,11 +25,14 @@ public class HandPoseTracker : MonoBehaviour
 
     float toleranceAngle = 20f;
 
+    //Only used for editor to save current hand pose to this scriptable object
+    public HandPose currentEditorHandPose;
+
     private void Start()
     {
         handVisual = GetComponentInParent<HandVisual>();
         handCurrent = handVisual.Hand;
-        
+
         handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
         indexRot = index.rotation;
     }
@@ -38,9 +41,9 @@ public class HandPoseTracker : MonoBehaviour
     {
         handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
 
-        if(Mathf.Abs(Quaternion.Angle(indexRot, index.rotation)) < toleranceAngle)
+        if (Mathf.Abs(Quaternion.Angle(indexRot, index.rotation)) < toleranceAngle)
         {
-            if(!inPose)
+            if (!inPose)
             {
                 OnPoseEnter?.Invoke();
                 inPose = true;
@@ -48,10 +51,16 @@ public class HandPoseTracker : MonoBehaviour
 
             OnPoseStay?.Invoke();
         }
-        else if(inPose)
+        else if (inPose)
         {
             OnPoseExit?.Invoke();
             inPose = false;
         }
+    }
+
+    [ContextMenu("Save Hand Pose")]
+    void SaveHandPose()
+    {
+        currentEditorHandPose.SetHandPose(handCurrent);
     }
 }
