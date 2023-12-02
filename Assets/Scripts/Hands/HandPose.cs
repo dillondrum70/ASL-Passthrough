@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.XR;
 using Oculus.Interaction.Input;
 using UnityEditor;
+using System;
 
 [ExecuteInEditMode]
 public class HandPose : MonoBehaviour
 {
     [SerializeField]
     private List<Transform> _jointTransforms = new List<Transform>();
+
+    [Header("Pose Joints")]
 
     [SerializeField] Transform handWristRoot;
     [SerializeField] Transform handForearmStub;
@@ -40,6 +43,22 @@ public class HandPose : MonoBehaviour
     Dictionary<HandJointId, Pose> localPoses;
     Dictionary<HandJointId, Pose> worldPoses;
 
+    [Header("Pose Properties")]
+
+    [SerializeField] float toleranceAngle = 20f;
+
+    [Header("Debug Values")]
+
+    [SerializeField] bool debugDrawBones = true;
+    [SerializeField] float debugFingertipLength = 0.025f;
+
+    [SerializeField] bool debugDrawJoints = true;
+    [SerializeField] float debugJointRadius = .005f;
+
+
+    /// <summary>
+    /// Clears joint transforms, resets those references, resets local poses, and resets world poses
+    /// </summary>
     public void ClearPose()
     {
         _jointTransforms.Clear();
@@ -67,6 +86,10 @@ public class HandPose : MonoBehaviour
         worldPoses = new Dictionary<HandJointId, Pose>();
     }
 
+    /// <summary>
+    /// Used to set joints in hand pose to match those in the passed hand
+    /// </summary>
+    /// <param name="hand">Hand to be copied</param>
     public void SetHandPose(IHand hand)
     {
         //for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
@@ -95,14 +118,17 @@ public class HandPose : MonoBehaviour
         {
             rootHandPose.ClearPose();
 
-            for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
+            for (int i = 0; i < (int)HandJointId.HandMaxSkinnable; i++)
             {
-                hand.GetJointPoseFromWrist((HandJointId)i, out Pose wristLocalPose);
-                rootHandPose._jointTransforms[i].transform.position = wristLocalPose.position;
-                rootHandPose._jointTransforms[i].transform.rotation = wristLocalPose.rotation;
+                //hand.GetJointPoseFromWrist((HandJointId)i, out Pose wristLocalPose);
+                //rootHandPose._jointTransforms[i].transform.position = wristLocalPose.position;
+                //rootHandPose._jointTransforms[i].transform.rotation = wristLocalPose.rotation;
 
                 hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
                 rootHandPose.localPoses.Add((HandJointId)i, localPose);
+
+                rootHandPose._jointTransforms[i].transform.localPosition = localPose.position;
+                rootHandPose._jointTransforms[i].transform.localRotation = localPose.rotation;
 
                 hand.GetJointPose((HandJointId)i, out Pose worldPose);
                 rootHandPose.worldPoses.Add((HandJointId)i, worldPose);
@@ -118,37 +144,74 @@ public class HandPose : MonoBehaviour
         PrefabUtility.UnloadPrefabContents(contentsRoot);
     }
 
+
+    public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
+    {
+        for (int i = 0; i < (int)HandJointId.HandMaxSkinnable; i++)
+        {
+            //Check each joint local angle
+            hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
+            if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            {
+                Debug.Log(Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)));
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-
         if (_jointTransforms == null) return;
         if (_jointTransforms.Count <= 0) return;
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandThumb0].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb0].position, _jointTransforms[(int)HandJointId.HandThumb1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb1].position, _jointTransforms[(int)HandJointId.HandThumb2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb2].position, _jointTransforms[(int)HandJointId.HandThumb3].position);
+        Gizmos.color = Color.red;
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandIndex1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex1].position, _jointTransforms[(int)HandJointId.HandIndex2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex2].position, _jointTransforms[(int)HandJointId.HandIndex3].position);
+        if (debugDrawBones)
+        {
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandThumb0].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb0].position, _jointTransforms[(int)HandJointId.HandThumb1].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb1].position, _jointTransforms[(int)HandJointId.HandThumb2].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb2].position, _jointTransforms[(int)HandJointId.HandThumb3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandThumb3].position, 
+                _jointTransforms[(int)HandJointId.HandThumb3].position + _jointTransforms[(int)HandJointId.HandThumb3].right * debugFingertipLength);
+                
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandIndex1].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex1].position, _jointTransforms[(int)HandJointId.HandIndex2].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex2].position, _jointTransforms[(int)HandJointId.HandIndex3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex3].position,
+                _jointTransforms[(int)HandJointId.HandIndex3].position + _jointTransforms[(int)HandJointId.HandIndex3].right * debugFingertipLength);
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandMiddle1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandMiddle1].position, _jointTransforms[(int)HandJointId.HandMiddle2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandMiddle2].position, _jointTransforms[(int)HandJointId.HandMiddle3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandMiddle1].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandMiddle1].position, _jointTransforms[(int)HandJointId.HandMiddle2].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandMiddle2].position, _jointTransforms[(int)HandJointId.HandMiddle3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandMiddle3].position,
+                _jointTransforms[(int)HandJointId.HandMiddle3].position + _jointTransforms[(int)HandJointId.HandMiddle3].right * debugFingertipLength);
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandRing1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandRing1].position, _jointTransforms[(int)HandJointId.HandRing2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandRing2].position, _jointTransforms[(int)HandJointId.HandRing3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandRing1].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandRing1].position, _jointTransforms[(int)HandJointId.HandRing2].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandRing2].position, _jointTransforms[(int)HandJointId.HandRing3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandRing3].position,
+                _jointTransforms[(int)HandJointId.HandRing3].position + _jointTransforms[(int)HandJointId.HandRing3].right * debugFingertipLength);
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandIndex1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex1].position, _jointTransforms[(int)HandJointId.HandIndex2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandIndex2].position, _jointTransforms[(int)HandJointId.HandIndex3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandPinky0].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky0].position, _jointTransforms[(int)HandJointId.HandPinky1].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky1].position, _jointTransforms[(int)HandJointId.HandPinky2].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky2].position, _jointTransforms[(int)HandJointId.HandPinky3].position);
+            Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky3].position,
+                _jointTransforms[(int)HandJointId.HandPinky3].position + _jointTransforms[(int)HandJointId.HandPinky3].right * debugFingertipLength);
+        }
 
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandPinky0].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky0].position, _jointTransforms[(int)HandJointId.HandPinky1].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky1].position, _jointTransforms[(int)HandJointId.HandPinky2].position);
-        Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandPinky2].position, _jointTransforms[(int)HandJointId.HandPinky3].position);
+        Gizmos.color = Color.blue;
+
+        if (debugDrawJoints)
+        {
+            for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
+            {
+                Gizmos.DrawSphere(_jointTransforms[i].position, debugJointRadius);
+            }
+        }
     }
 }
