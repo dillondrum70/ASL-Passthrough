@@ -40,10 +40,10 @@ public class HandPose : MonoBehaviour
     [SerializeField] Transform handRingTip;
     [SerializeField] Transform handPinkyTip;
 
-    Dictionary<HandJointId, Pose> localPoses;
-    Dictionary<HandJointId, Pose> worldPoses;
-
     [Header("Pose Properties")]
+
+    //i.e. If wrist world rotation is ignored, thumbs up and thumbs down would both accept since the hand is the same pose, just the wrist rotates
+    [SerializeField] bool ignoreWorldWristRotation = false;
 
     [SerializeField] float toleranceAngle = 20f;
 
@@ -86,16 +86,14 @@ public class HandPose : MonoBehaviour
         _jointTransforms.Add(handPinky1);
         _jointTransforms.Add(handPinky2);
         _jointTransforms.Add(handPinky3);
-
-        localPoses = new Dictionary<HandJointId, Pose>();
-        worldPoses = new Dictionary<HandJointId, Pose>();
     }
 
     /// <summary>
     /// Used to set joints in hand pose to match those in the passed hand
     /// </summary>
     /// <param name="hand">Hand to be copied</param>
-    public void SetHandPose(IHand hand)
+    /// <param name="physicalHand">The object under which all the hand bones lie</param>
+    public void SetHandPose(IHand hand, Transform physicalHand)
     {
         //for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
         //{
@@ -123,20 +121,35 @@ public class HandPose : MonoBehaviour
         {
             rootHandPose.ClearPose();
 
-            for (int i = 0; i < (int)HandJointId.HandMaxSkinnable; i++)
+            //Get wrist local pose
+            hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+
+            //Set wrist position
+            rootHandPose._jointTransforms[0].transform.localPosition = lPose.position;
+
+            //Set wrist rotation
+            if(ignoreWorldWristRotation)
+            {
+                rootHandPose._jointTransforms[0].transform.localRotation = lPose.rotation;
+            }
+            else
+            {
+                //wrist pose is always static since it is local and it is the root so all the some
+                //transformations on the wrist instead come from the parent hand
+                rootHandPose._jointTransforms[0].transform.rotation = physicalHand.localRotation;
+            }
+
+            //Everything else is local-based because they are all connected to the wrist
+            for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
             {
                 //hand.GetJointPoseFromWrist((HandJointId)i, out Pose wristLocalPose);
                 //rootHandPose._jointTransforms[i].transform.position = wristLocalPose.position;
                 //rootHandPose._jointTransforms[i].transform.rotation = wristLocalPose.rotation;
 
                 hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
-                rootHandPose.localPoses.Add((HandJointId)i, localPose);
 
                 rootHandPose._jointTransforms[i].transform.localPosition = localPose.position;
                 rootHandPose._jointTransforms[i].transform.localRotation = localPose.rotation;
-
-                hand.GetJointPose((HandJointId)i, out Pose worldPose);
-                rootHandPose.worldPoses.Add((HandJointId)i, worldPose);
             }
         }
         else
@@ -150,15 +163,37 @@ public class HandPose : MonoBehaviour
     }
 
 
-    public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
+    public bool CheckHandMatch(IHand hand, Transform physicalHand, float toleranceMultiplier)
     {
-        for (int i = 0; i < (int)HandJointId.HandMaxSkinnable; i++)
+        //Get wrist local pose
+        hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+
+        //Set wrist rotation
+        if (ignoreWorldWristRotation)
+        {
+            if (Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            {
+                Debug.Log(Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)));
+                return false;
+            }
+        }
+        else
+        {
+            //wrist pose is always static since it is local and it is the root so all the some
+            //transformations on the wrist instead come from the parent hand
+            if (Mathf.Abs(Quaternion.Angle(physicalHand.localRotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            {
+                Debug.Log(Mathf.Abs(Quaternion.Angle(physicalHand.localRotation, _jointTransforms[0].transform.localRotation)));
+                return false;
+            }
+        }
+
+        for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
         {
             //Check each joint local angle
             hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
             if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
             {
-                Debug.Log(Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)));
                 return false;
             }
         }
