@@ -55,6 +55,11 @@ public class HandPose : MonoBehaviour
     [SerializeField] bool debugDrawJoints = true;
     [SerializeField] float debugJointRadius = .005f;
 
+    [SerializeField] bool debugDrawTolerance = true;
+    [SerializeField] float debugToleranceLength = .01f;
+
+
+    public float GetToleranceAngle() { return toleranceAngle; }
 
     /// <summary>
     /// Clears joint transforms, resets those references, resets local poses, and resets world poses
@@ -211,6 +216,18 @@ public class HandPose : MonoBehaviour
             for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
             {
                 Gizmos.DrawSphere(_jointTransforms[i].position, debugJointRadius);
+            }
+        }
+
+        //Orange
+        Gizmos.color = new Color(1, .3f, 0, .5f);
+
+        if (debugDrawTolerance)
+        {
+            for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
+            {
+                Gizmos.matrix = Matrix4x4.TRS(_jointTransforms[i].position, _jointTransforms[i].rotation * Quaternion.Euler(new Vector3(0, 90, 0)), new Vector3(1.0f, 1.0f, 1.0f));
+                Gizmos.DrawFrustum(Vector3.zero, toleranceAngle * 2, debugToleranceLength, 0, 1);
             }
         }
     }
