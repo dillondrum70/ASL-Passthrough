@@ -7,7 +7,7 @@ using Oculus.Interaction.Input;
 using UnityEditor;
 using System;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class HandPose : MonoBehaviour
 {
     [SerializeField]
@@ -93,7 +93,7 @@ public class HandPose : MonoBehaviour
     /// </summary>
     /// <param name="hand">Hand to be copied</param>
     /// <param name="physicalHand">The object under which all the hand bones lie</param>
-    public void SetHandPose(IHand hand, Transform physicalHand)
+    public void SetHandPose(IHand hand)
     {
         //for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
         //{
@@ -123,6 +123,7 @@ public class HandPose : MonoBehaviour
 
             //Get wrist local pose
             hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+            hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
 
             //Set wrist position
             rootHandPose._jointTransforms[0].transform.localPosition = lPose.position;
@@ -135,8 +136,11 @@ public class HandPose : MonoBehaviour
             else
             {
                 //wrist pose is always static since it is local and it is the root so all the some
-                //transformations on the wrist instead come from the parent hand
-                rootHandPose._jointTransforms[0].transform.rotation = physicalHand.localRotation;
+                //transformations on the wrist instead come from the world space
+                //We must also undo the rotation done by turning your body (head in this case) so it doesn't matter where you're facing when you sign
+                Quaternion rot = wPose.rotation;
+                rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
+                rootHandPose._jointTransforms[0].transform.rotation = rot;
             }
 
             //Everything else is local-based because they are all connected to the wrist
@@ -163,7 +167,7 @@ public class HandPose : MonoBehaviour
     }
 
 
-    public bool CheckHandMatch(IHand hand, Transform physicalHand, float toleranceMultiplier)
+    public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
     {
         //Get wrist local pose
         hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
@@ -173,17 +177,21 @@ public class HandPose : MonoBehaviour
         {
             if (Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
             {
-                Debug.Log(Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)));
+                //Debug.Log(Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)));
                 return false;
             }
         }
         else
         {
+            hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
+
             //wrist pose is always static since it is local and it is the root so all the some
             //transformations on the wrist instead come from the parent hand
-            if (Mathf.Abs(Quaternion.Angle(physicalHand.localRotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            Quaternion rot = wPose.rotation;
+            rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
+            if (Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)) > toleranceAngle * toleranceMultiplier)
             {
-                Debug.Log(Mathf.Abs(Quaternion.Angle(physicalHand.localRotation, _jointTransforms[0].transform.localRotation)));
+                Debug.Log(Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)));
                 return false;
             }
         }

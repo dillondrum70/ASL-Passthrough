@@ -57,7 +57,7 @@ public class HandPoseTracker : MonoBehaviour
         //handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
 
         //Check if HandPose matches current hand
-        if (currentEditorHandPose.CheckHandMatch(handCurrent, transform, toleranceMultiplier))
+        if (currentEditorHandPose.CheckHandMatch(handCurrent, toleranceMultiplier))
         {
             //OnEnter
             if (!inPose)
@@ -92,7 +92,7 @@ public class HandPoseTracker : MonoBehaviour
     /// <param name="pose"></param>
     void SaveHandPose(HandPose pose)
     {
-        pose.SetHandPose(handCurrent, transform);
+        pose.SetHandPose(handCurrent);
     }
 
 #if UNITY_EDITOR
@@ -102,7 +102,7 @@ public class HandPoseTracker : MonoBehaviour
     [ContextMenu("Save Hand Pose")]
     void EditorSaveHandPose()
     {
-        currentEditorHandPose.SetHandPose(handCurrent, transform);
+        currentEditorHandPose.SetHandPose(handCurrent);
     }
 
     //private void OnDrawGizmos()
