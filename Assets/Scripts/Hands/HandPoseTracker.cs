@@ -12,15 +12,17 @@ public class HandPoseTracker : MonoBehaviour
 {
     [SerializeField] bool right = true;
 
+    [SerializeField] List<HandPose> handPoseList;
+
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
 
-    Quaternion indexRot;
-
+    //Generic events fired for every pose
     public UnityEvent<HandPose> OnPoseEnter;
     public UnityEvent<HandPose> OnPoseStay;
     public UnityEvent<HandPose> OnPoseExit;
 
+    //Determines if hand is making a pose currently or not
     bool inPose = false;
 
     //In case we want a difficulty toggle requiring more precise or less precise signs
@@ -49,30 +51,37 @@ public class HandPoseTracker : MonoBehaviour
         handCurrent = handVisual.Hand;
 
         handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
-        indexRot = index.rotation;
     }
 
     private void Update()
     {
         //handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
 
-        //Check if HandPose matches current hand
-        if (currentEditorHandPose.CheckHandMatch(handCurrent, toleranceMultiplier))
+        //NOT PERFORMANT, lots of loops as you add more poses
+        //Maybe try a system that uses a temp list and goes through all wrist bones in each pose, remove any hand poses that don't match,
+        //then continue to the next pose node but only for the HandPoses that matched at the wrist
+        foreach(HandPose pose in handPoseList)
         {
-            //OnEnter
-            if (!inPose)
+            //Check if HandPose matches current hand
+            if (pose.CheckHandMatch(handCurrent, toleranceMultiplier))
             {
-                OnPoseEnter?.Invoke(currentEditorHandPose);
-                inPose = true;
-            }
+                //OnEnter
+                if (!pose.GetInPose())
+                {
+                    OnPoseEnter?.Invoke(pose);
+                    inPose = true; //Hand tracker has logged a pose, general
+                    pose.SetInPose(true); //This pose is the one that is logged
+                }
 
-            //OnStay
-            OnPoseStay?.Invoke(currentEditorHandPose);
-        }
-        else if (inPose) //OnExit
-        {
-            OnPoseExit?.Invoke(currentEditorHandPose);
-            inPose = false;
+                //OnStay
+                OnPoseStay?.Invoke(pose);
+            }
+            else if (pose.GetInPose()) //OnExit
+            {
+                OnPoseExit?.Invoke(pose);
+                inPose = false;
+                pose.SetInPose(false);
+            }
         }
 
 #if UNITY_EDITOR

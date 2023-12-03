@@ -2138,6 +2138,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   right: 1
+  handPoseList:
+  - {fileID: -6202488916469461938, guid: 59b520833532fac44adbafa8c2c4d738, type: 3}
+  - {fileID: -6202488916469461938, guid: 2f2d8f5fdb5644146a4ec37e216a10a7, type: 3}
+  - {fileID: -6202488916469461938, guid: a4aa96af0f21e324cb49c18e070a20d8, type: 3}
   handVisual: {fileID: 0}
   OnPoseEnter:
     m_PersistentCalls:

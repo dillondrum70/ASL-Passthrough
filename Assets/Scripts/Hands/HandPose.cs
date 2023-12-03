@@ -69,9 +69,14 @@ public class HandPose : MonoBehaviour
 
     [SerializeField] bool debugDrawWristPosition = true;
 
+    bool inPose = false;
+
 
     public string GetDisplayName() { return displayName; }
     public float GetToleranceAngle() { return toleranceAngle; }
+
+    public bool GetInPose() { return inPose; }
+    public void SetInPose(bool inPose) { this.inPose = inPose; }
 
     /// <summary>
     /// Clears joint transforms, resets those references, resets local poses, and resets world poses
