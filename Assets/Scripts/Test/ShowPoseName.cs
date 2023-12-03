@@ -1,19 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class MaterialSwap : MonoBehaviour
+public class ShowPoseName : MonoBehaviour
 {
-    [SerializeField] Material matOff, matOn;
-
-    MeshRenderer meshRend;
-
     [SerializeField] HandPoseTracker handPoseTracker;
+
+    TextMeshProUGUI textMesh;
 
     private void Start()
     {
-        meshRend = GetComponent<MeshRenderer>();
-        meshRend.material = matOff;
+        textMesh = GetComponent<TextMeshProUGUI>();
     }
 
     private void OnEnable()
@@ -30,11 +29,11 @@ public class MaterialSwap : MonoBehaviour
 
     public void OnEnter(HandPose pose)
     {
-        meshRend.material = matOn;
+        textMesh.text = pose.GetDisplayName();
     }
 
     public void OnExit(HandPose pose)
     {
-        meshRend.material = matOff;
+        textMesh.text = "";
     }
 }

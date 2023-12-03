@@ -10,6 +10,8 @@ using System;
 [ExecuteAlways]
 public class HandPose : MonoBehaviour
 {
+    [SerializeField] string displayName = "";
+
     [SerializeField]
     private List<Transform> _jointTransforms = new List<Transform>();
 
@@ -59,6 +61,7 @@ public class HandPose : MonoBehaviour
     [SerializeField] float debugToleranceLength = .01f;
 
 
+    public string GetDisplayName() { return displayName; }
     public float GetToleranceAngle() { return toleranceAngle; }
 
     /// <summary>
@@ -123,7 +126,6 @@ public class HandPose : MonoBehaviour
 
             //Get wrist local pose
             hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
-            hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
 
             //Set wrist position
             rootHandPose._jointTransforms[0].transform.localPosition = lPose.position;
@@ -135,6 +137,8 @@ public class HandPose : MonoBehaviour
             }
             else
             {
+                hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
+
                 //wrist pose is always static since it is local and it is the root so all the some
                 //transformations on the wrist instead come from the world space
                 //We must also undo the rotation done by turning your body (head in this case) so it doesn't matter where you're facing when you sign
@@ -170,14 +174,14 @@ public class HandPose : MonoBehaviour
     public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
     {
         //Get wrist local pose
-        hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+        //hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
 
         //Set wrist rotation
         if (ignoreWorldWristRotation)
         {
-            if (Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose localPose);
+            if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
             {
-                //Debug.Log(Mathf.Abs(Quaternion.Angle(lPose.rotation, _jointTransforms[0].transform.localRotation)));
                 return false;
             }
         }
@@ -191,7 +195,6 @@ public class HandPose : MonoBehaviour
             rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
             if (Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)) > toleranceAngle * toleranceMultiplier)
             {
-                Debug.Log(Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)));
                 return false;
             }
         }

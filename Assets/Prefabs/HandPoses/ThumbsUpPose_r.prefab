@@ -1562,6 +1562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 120b5d9ae400c134781ce27a72e29aa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  displayName: Thumbs Up
   _jointTransforms:
   - {fileID: 1671236896092642612}
   - {fileID: 6672339703861102145}

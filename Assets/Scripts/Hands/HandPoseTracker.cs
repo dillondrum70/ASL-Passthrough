@@ -17,9 +17,9 @@ public class HandPoseTracker : MonoBehaviour
 
     Quaternion indexRot;
 
-    public UnityEvent OnPoseEnter;
-    public UnityEvent OnPoseStay;
-    public UnityEvent OnPoseExit;
+    public UnityEvent<HandPose> OnPoseEnter;
+    public UnityEvent<HandPose> OnPoseStay;
+    public UnityEvent<HandPose> OnPoseExit;
 
     bool inPose = false;
 
@@ -62,16 +62,16 @@ public class HandPoseTracker : MonoBehaviour
             //OnEnter
             if (!inPose)
             {
-                OnPoseEnter?.Invoke();
+                OnPoseEnter?.Invoke(currentEditorHandPose);
                 inPose = true;
             }
 
             //OnStay
-            OnPoseStay?.Invoke();
+            OnPoseStay?.Invoke(currentEditorHandPose);
         }
         else if (inPose) //OnExit
         {
-            OnPoseExit?.Invoke();
+            OnPoseExit?.Invoke(currentEditorHandPose);
             inPose = false;
         }
 
