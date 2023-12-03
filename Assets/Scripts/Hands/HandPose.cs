@@ -44,10 +44,19 @@ public class HandPose : MonoBehaviour
 
     [Header("Pose Properties")]
 
+    //max angle away from target angle on each joint for pose to accept
+    [SerializeField] float toleranceAngle = 20f;
+
+    //max distance from target wrist position for pose to accept
+    [SerializeField] float toleranceRadius = .1f;
+
+    //Whether or not position of hand matters for the sign
+    [SerializeField] bool ignoreWristPosition = false;
+
+    [Header("Pose Properties - REQUIRES POSE TO BE RESET")]
+
     //i.e. If wrist world rotation is ignored, thumbs up and thumbs down would both accept since the hand is the same pose, just the wrist rotates
     [SerializeField] bool ignoreWorldWristRotation = false;
-
-    [SerializeField] float toleranceAngle = 20f;
 
     [Header("Debug Values")]
 
@@ -59,6 +68,8 @@ public class HandPose : MonoBehaviour
 
     [SerializeField] bool debugDrawTolerance = true;
     [SerializeField] float debugToleranceLength = .01f;
+
+    [SerializeField] bool debugDrawWristPosition = true;
 
 
     public string GetDisplayName() { return displayName; }
@@ -125,24 +136,23 @@ public class HandPose : MonoBehaviour
             rootHandPose.ClearPose();
 
             //Get wrist local pose
-            hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+            hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
+            hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
 
-            //Set wrist position
-            rootHandPose._jointTransforms[0].transform.localPosition = lPose.position;
+            //Regardless of whether we ignore the wrist position, we still set it
+            rootHandPose._jointTransforms[0].transform.position = wristWorldPose.position - Camera.main.transform.position;
 
             //Set wrist rotation
-            if(ignoreWorldWristRotation)
+            if (ignoreWorldWristRotation)
             {
-                rootHandPose._jointTransforms[0].transform.localRotation = lPose.rotation;
+                rootHandPose._jointTransforms[0].transform.localRotation = wristLocalPose.rotation;
             }
             else
             {
-                hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
-
                 //wrist pose is always static since it is local and it is the root so all the some
                 //transformations on the wrist instead come from the world space
                 //We must also undo the rotation done by turning your body (head in this case) so it doesn't matter where you're facing when you sign
-                Quaternion rot = wPose.rotation;
+                Quaternion rot = wristWorldPose.rotation;
                 rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
                 rootHandPose._jointTransforms[0].transform.rotation = rot;
             }
@@ -171,27 +181,41 @@ public class HandPose : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Check that passed hand match is tolerable to this pose
+    /// </summary>
+    /// <param name="hand">Hand to check</param>
+    /// <param name="toleranceMultiplier">Multiplier for tolerance, lower value = lower tolerance, more difficult</param>
+    /// <returns></returns>
     public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
     {
         //Get wrist local pose
-        //hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose lPose);
+        hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
+        hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
 
-        //Set wrist rotation
+        Vector3 currentPosRelativeToCamera = wristWorldPose.position - Camera.main.transform.position;
+
+        //Check wrist position is within the correct radius
+        if (!ignoreWristPosition &&
+            Mathf.Abs((currentPosRelativeToCamera - _jointTransforms[0].position).magnitude) > toleranceRadius * toleranceMultiplier)
+        {
+            Debug.Log($"Position Mismatch - {(wristWorldPose.position - Camera.main.transform.position).magnitude}");
+            return false;
+        }
+
+        //Check wrist rotation matches if not ignoring wrist rotation
         if (ignoreWorldWristRotation)
         {
-            hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose localPose);
-            if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            if (Mathf.Abs(Quaternion.Angle(wristLocalPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
             {
                 return false;
             }
         }
         else
         {
-            hand.GetJointPose(HandJointId.HandWristRoot, out Pose wPose);
-
             //wrist pose is always static since it is local and it is the root so all the some
             //transformations on the wrist instead come from the parent hand
-            Quaternion rot = wPose.rotation;
+            Quaternion rot = wristWorldPose.rotation;
             rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
             if (Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)) > toleranceAngle * toleranceMultiplier)
             {
@@ -199,6 +223,7 @@ public class HandPose : MonoBehaviour
             }
         }
 
+        //Check angle is acceptable for each joint
         for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
         {
             //Check each joint local angle
@@ -220,6 +245,7 @@ public class HandPose : MonoBehaviour
 
         Gizmos.color = Color.red;
 
+        //Bones
         if (debugDrawBones)
         {
             Gizmos.DrawLine(_jointTransforms[(int)HandJointId.HandWristRoot].position, _jointTransforms[(int)HandJointId.HandThumb0].position);
@@ -257,6 +283,7 @@ public class HandPose : MonoBehaviour
 
         Gizmos.color = Color.blue;
 
+        //Joints
         if (debugDrawJoints)
         {
             for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
@@ -265,9 +292,18 @@ public class HandPose : MonoBehaviour
             }
         }
 
+        Gizmos.color = Color.green;
+
+        //Wrist
+        if (debugDrawWristPosition)
+        {
+            Gizmos.DrawWireSphere(_jointTransforms[0].position, toleranceRadius);
+        }
+
         //Orange
         Gizmos.color = new Color(1, .3f, 0, .5f);
 
+        //Tolerance frustums
         if (debugDrawTolerance)
         {
             for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
