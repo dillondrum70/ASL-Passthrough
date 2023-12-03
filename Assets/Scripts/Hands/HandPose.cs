@@ -44,19 +44,17 @@ public class HandPose : MonoBehaviour
 
     [Header("Pose Properties")]
 
+    //i.e. If wrist world rotation is ignored, thumbs up and thumbs down would both accept since the hand is the same pose, just the wrist rotates
+    [SerializeField] bool ignoreWristRotation = false;
+
     //max angle away from target angle on each joint for pose to accept
     [SerializeField] float toleranceAngle = 20f;
-
-    //max distance from target wrist position for pose to accept
-    [SerializeField] float toleranceRadius = .1f;
 
     //Whether or not position of hand matters for the sign
     [SerializeField] bool ignoreWristPosition = false;
 
-    [Header("Pose Properties - REQUIRES POSE TO BE RESET")]
-
-    //i.e. If wrist world rotation is ignored, thumbs up and thumbs down would both accept since the hand is the same pose, just the wrist rotates
-    [SerializeField] bool ignoreWorldWristRotation = false;
+    //max distance from target wrist position for pose to accept
+    [SerializeField] float toleranceRadius = .1f;
 
     [Header("Debug Values")]
 
@@ -142,20 +140,12 @@ public class HandPose : MonoBehaviour
             //Regardless of whether we ignore the wrist position, we still set it
             rootHandPose._jointTransforms[0].transform.position = wristWorldPose.position - Camera.main.transform.position;
 
-            //Set wrist rotation
-            if (ignoreWorldWristRotation)
-            {
-                rootHandPose._jointTransforms[0].transform.localRotation = wristLocalPose.rotation;
-            }
-            else
-            {
-                //wrist pose is always static since it is local and it is the root so all the some
-                //transformations on the wrist instead come from the world space
-                //We must also undo the rotation done by turning your body (head in this case) so it doesn't matter where you're facing when you sign
-                Quaternion rot = wristWorldPose.rotation;
-                rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
-                rootHandPose._jointTransforms[0].transform.rotation = rot;
-            }
+            //wrist pose is always static since it is local and it is the root so all the some
+            //transformations on the wrist instead come from the world space
+            //We must also undo the rotation done by turning your body (head in this case) so it doesn't matter where you're facing when you sign
+            Quaternion rot = wristWorldPose.rotation;
+            rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
+            rootHandPose._jointTransforms[0].transform.rotation = rot;
 
             //Everything else is local-based because they are all connected to the wrist
             for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
@@ -204,14 +194,7 @@ public class HandPose : MonoBehaviour
         }
 
         //Check wrist rotation matches if not ignoring wrist rotation
-        if (ignoreWorldWristRotation)
-        {
-            if (Mathf.Abs(Quaternion.Angle(wristLocalPose.rotation, _jointTransforms[0].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
-            {
-                return false;
-            }
-        }
-        else
+        if (!ignoreWristRotation)
         {
             //wrist pose is always static since it is local and it is the root so all the some
             //transformations on the wrist instead come from the parent hand
