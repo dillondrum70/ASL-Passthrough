@@ -80,6 +80,7 @@ public class HandPose : MonoBehaviour
 
     public string GetDisplayName() { return displayName; }
     public float GetToleranceAngle() { return toleranceAngle; }
+    public float GetToleranceRadius() { return toleranceRadius; }
 
     public bool GetInPose() { return inPose; }
     public void SetInPose(bool inPose) { this.inPose = inPose; }
@@ -150,8 +151,10 @@ public class HandPose : MonoBehaviour
             hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
             hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
 
+            Quaternion inverseCamQuat = Quaternion.Inverse(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
+
             //Regardless of whether we ignore the wrist position, we still set it
-            rootHandPose._jointTransforms[0].transform.position = wristWorldPose.position - Camera.main.transform.position;
+            rootHandPose._jointTransforms[0].transform.position = inverseCamQuat * (wristWorldPose.position - Camera.main.transform.position);
 
             //wrist pose is always static since it is local and it is the root so all the some
             //transformations on the wrist instead come from the world space
@@ -196,7 +199,8 @@ public class HandPose : MonoBehaviour
         hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
         hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
 
-        Vector3 currentPosRelativeToCamera = wristWorldPose.position - Camera.main.transform.position;
+        Quaternion inverseCamQuat = Quaternion.Inverse(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
+        Vector3 currentPosRelativeToCamera = inverseCamQuat * (wristWorldPose.position - Camera.main.transform.position);
 
         //Check wrist position is within the correct radius
         if (!ignoreWristPosition &&

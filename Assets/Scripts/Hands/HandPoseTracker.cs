@@ -35,6 +35,9 @@ public class HandPoseTracker : MonoBehaviour
 
     HandPose debugPose;
 
+    [SerializeField] GameObject handPositionMarkerPrefab;
+    GameObject debugHandPositionMarker;
+
 #if UNITY_EDITOR
     [Header("Editor")]
 
@@ -122,10 +125,15 @@ public class HandPoseTracker : MonoBehaviour
     {
         if (debugPose)
         {
+            Destroy(debugHandPositionMarker.gameObject);
             Destroy(debugPose.gameObject);
         }
 
         debugPose = Instantiate(pose);
+        debugHandPositionMarker = Instantiate(handPositionMarkerPrefab);
+
+        float toleranceRadius = debugPose.GetToleranceRadius();
+        debugHandPositionMarker.transform.localScale = new Vector3(toleranceRadius, toleranceRadius, toleranceRadius);
     }
 
     void UpdateDisplayHandPose()
@@ -133,13 +141,19 @@ public class HandPoseTracker : MonoBehaviour
         if (debugDisplayHandPose &&
             debugPose != null)
         {
-            Transform jointTransform = debugPose.GetJointTransform(0);
+            debugPose.transform.position = Camera.main.transform.position;
+            debugPose.transform.rotation = Quaternion.Euler(
+                debugPose.transform.rotation.eulerAngles.x,
+                Camera.main.transform.eulerAngles.y,
+                debugPose.transform.rotation.eulerAngles.z);
 
-            debugPose.transform.position = transform.position;
+            Transform jointTransform = debugPose.GetJointTransform(0);
+            debugHandPositionMarker.transform.position = jointTransform.position;
         }
         else if (debugPose)
         {
             debugPose.enabled = false;
+            debugHandPositionMarker.SetActive(false);
         }
     }
 
