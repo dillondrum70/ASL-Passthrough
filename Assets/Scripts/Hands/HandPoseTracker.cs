@@ -12,7 +12,7 @@ public class HandPoseTracker : MonoBehaviour
 {
     [SerializeField] bool right = true;
 
-    [SerializeField] List<HandPose> handPoseList;
+    [SerializeField] public List<HandPose> handPoseList;
 
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
@@ -78,16 +78,19 @@ public class HandPoseTracker : MonoBehaviour
                 if (!pose.GetInPose())
                 {
                     OnPoseEnter?.Invoke(pose);
+                    pose.OnPoseEnter?.Invoke(pose);
                     inPose = true; //Hand tracker has logged a pose, general
                     pose.SetInPose(true); //This pose is the one that is logged
                 }
 
                 //OnStay
                 OnPoseStay?.Invoke(pose);
+                pose.OnPoseStay?.Invoke(pose);
             }
             else if (pose.GetInPose()) //OnExit
             {
                 OnPoseExit?.Invoke(pose);
+                pose.OnPoseExit?.Invoke(pose);
                 inPose = false;
                 pose.SetInPose(false);
             }
@@ -113,92 +116,20 @@ public class HandPoseTracker : MonoBehaviour
     {
         currentEditorHandPose.SetHandPose(handCurrent);
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    if (!Application.isPlaying) return;
-
-    //    Gizmos.color = Color.yellow;
-        
-    //    if (debugDrawBones)
-    //    {
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandWristRoot, out Pose HandWristRoot);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandThumb0, out Pose HandThumb0);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandThumb1, out Pose HandThumb1);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandThumb2, out Pose HandThumb2);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandThumb3, out Pose HandThumb3);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandThumbTip, out Pose HandThumbTip);
-    //        Gizmos.DrawLine(HandWristRoot.position, HandThumb0.position);
-    //        Gizmos.DrawLine(HandThumb0.position, HandThumb1.position);
-    //        Gizmos.DrawLine(HandThumb1.position, HandThumb2.position);
-    //        Gizmos.DrawLine(HandThumb2.position, HandThumb3.position);
-    //        Gizmos.DrawLine(HandThumb3.position, HandThumbTip.position);
-
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose HandIndex1);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandIndex2, out Pose HandIndex2);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandIndex3, out Pose HandIndex3);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandIndexTip, out Pose HandIndexTip);
-    //        Gizmos.DrawLine(HandWristRoot.position, HandIndex1.position);
-    //        Gizmos.DrawLine(HandIndex1.position, HandIndex2.position);
-    //        Gizmos.DrawLine(HandIndex2.position, HandIndex3.position);
-    //        Gizmos.DrawLine(HandIndex3.position, HandIndexTip.position);
-
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandMiddle1, out Pose HandMiddle1);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandMiddle2, out Pose HandMiddle2);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandMiddle3, out Pose HandMiddle3);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandMiddleTip, out Pose HandMiddleTip);
-    //        Gizmos.DrawLine(HandWristRoot.position, HandMiddle1.position);
-    //        Gizmos.DrawLine(HandMiddle1.position, HandMiddle2.position);
-    //        Gizmos.DrawLine(HandMiddle2.position, HandMiddle3.position);
-    //        Gizmos.DrawLine(HandMiddle3.position, HandMiddleTip.position);
-
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandRing1, out Pose HandRing1);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandRing2, out Pose HandRing2);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandRing3, out Pose HandRing3);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandRingTip, out Pose HandRingTip);
-    //        Gizmos.DrawLine(HandWristRoot.position, HandRing1.position);
-    //        Gizmos.DrawLine(HandRing1.position, HandRing2.position);
-    //        Gizmos.DrawLine(HandRing2.position, HandRing3.position);
-    //        Gizmos.DrawLine(HandRing3.position, HandRingTip.position);
-
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandPinky0, out Pose HandPinky0);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandPinky1, out Pose HandPinky1);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandPinky2, out Pose HandPinky2);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandPinky3, out Pose HandPinky3);
-    //        handCurrent.GetJointPose(Oculus.Interaction.Input.HandJointId.HandPinkyTip, out Pose HandPinkyTip);
-    //        Gizmos.DrawLine(HandWristRoot.position, HandPinky0.position);
-    //        Gizmos.DrawLine(HandPinky0.position, HandPinky1.position);
-    //        Gizmos.DrawLine(HandPinky1.position, HandPinky2.position);
-    //        Gizmos.DrawLine(HandPinky2.position, HandPinky3.position);
-    //        Gizmos.DrawLine(HandPinky3.position, HandPinkyTip.position);
-    //    }
-
-    //    Gizmos.color = Color.green;
-
-    //    if (debugDrawJoints)
-    //    {
-    //        for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
-    //        {
-    //            handCurrent.GetJointPose((HandJointId)i, out Pose pose);
-    //            Gizmos.DrawSphere(pose.position, debugJointRadius);
-    //        }
-    //    }
-
-    //    ////Orange
-    //    //Gizmos.color = new Color(1, .3f, 0, .5f);
-
-    //    //if (debugDrawTolerance)
-    //    //{
-    //    //    for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
-    //    //    {
-    //    //        handCurrent.GetJointPose((HandJointId)i, out Pose pose);
-    //    //        Gizmos.matrix = Matrix4x4.TRS(pose.position, pose.rotation * Quaternion.Euler(new Vector3(0, 90, 0)), new Vector3(1.0f, 1.0f, 1.0f));
-    //    //        Gizmos.DrawFrustum(Vector3.zero, currentEditorHandPose.GetToleranceAngle() * 2, debugToleranceLength, 0, 1);
-    //    //    }
-    //    //}
-
-        
-    //}
 #endif
 
+    /// <summary>
+    /// Search list of valid poses based on the display names in each pose
+    /// </summary>
+    /// <param name="displayName">Name to search for</param>
+    /// <returns></returns>
+    public HandPose GetHandPose(string displayName)
+    {
+        foreach(HandPose pose in handPoseList)
+        {
+            if (pose.GetDisplayName() == displayName) return pose;
+        }
+
+        return null;
+    }
 }

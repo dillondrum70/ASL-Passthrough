@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class MaterialSwap : MonoBehaviour
 {
-    [SerializeField] Material matOff, matOn;
+    [SerializeField] Material matOff, matOn, matRed;
 
     MeshRenderer meshRend;
 
     [SerializeField] HandPoseTracker handPoseTracker;
+
+    [SerializeField] string redPoseName = "";
 
     private void Start()
     {
@@ -20,12 +22,28 @@ public class MaterialSwap : MonoBehaviour
     {
         handPoseTracker.OnPoseEnter.AddListener(OnEnter);
         handPoseTracker.OnPoseExit.AddListener(OnExit);
+
+        HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
+
+        if(redPose != null)
+        {
+            redPose.OnPoseEnter.AddListener(OnEnterRed);
+            redPose.OnPoseExit.AddListener(OnExit);
+        }
     }
 
     private void OnDisable()
     {
         handPoseTracker.OnPoseEnter.RemoveListener(OnEnter);
         handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+
+        HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
+
+        if(redPose != null )
+        {
+            redPose.OnPoseEnter.RemoveListener(OnEnterRed);
+            redPose.OnPoseExit.RemoveListener(OnExit);
+        }
     }
 
     public void OnEnter(HandPose pose)
@@ -36,5 +54,10 @@ public class MaterialSwap : MonoBehaviour
     public void OnExit(HandPose pose)
     {
         meshRend.material = matOff;
+    }
+
+    public void OnEnterRed(HandPose pose)
+    {
+        meshRend.material = matRed;
     }
 }

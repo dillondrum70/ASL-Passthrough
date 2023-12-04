@@ -6,6 +6,7 @@ using UnityEngine.XR;
 using Oculus.Interaction.Input;
 using UnityEditor;
 using System;
+using UnityEngine.Events;
 
 [ExecuteAlways]
 public class HandPose : MonoBehaviour
@@ -14,6 +15,11 @@ public class HandPose : MonoBehaviour
 
     [SerializeField]
     private List<Transform> _jointTransforms = new List<Transform>();
+
+    //Events fired for this specific pose
+    public UnityEvent<HandPose> OnPoseEnter;
+    public UnityEvent<HandPose> OnPoseStay;
+    public UnityEvent<HandPose> OnPoseExit;
 
     [Header("Pose Joints")]
 

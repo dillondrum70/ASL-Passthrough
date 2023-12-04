@@ -1200,7 +1200,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matOff: {fileID: 2100000, guid: 1204c9ab20ed6e74e9720261faa3e933, type: 2}
   matOn: {fileID: 2100000, guid: 865442f01052fe74e9eebd99d906e5ca, type: 2}
+  matRed: {fileID: 2100000, guid: de56cc017e9292c4ba1622b335ce0ed5, type: 2}
   handPoseTracker: {fileID: 2118942617}
+  redPoseName: Rock & Roll
 --- !u!4 &889137270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4154509707602826, guid: e201a24a09e942042b93390d0444d728, type: 3}
