@@ -2139,29 +2139,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   right: 1
   handPoseList:
-  - {fileID: -6202488916469461938, guid: 59b520833532fac44adbafa8c2c4d738, type: 3}
-  - {fileID: -6202488916469461938, guid: 2f2d8f5fdb5644146a4ec37e216a10a7, type: 3}
-  - {fileID: -6202488916469461938, guid: a4aa96af0f21e324cb49c18e070a20d8, type: 3}
-  - {fileID: -6202488916469461938, guid: a432f47183590cb48a204259f1e8fec5, type: 3}
-  - {fileID: -6202488916469461938, guid: 688160ec785de6e4d89b735f1ef75939, type: 3}
-  - {fileID: -6202488916469461938, guid: 1f33f3f52a00bd043973e1004725a8dd, type: 3}
-  - {fileID: -6202488916469461938, guid: 7cb1fdb1ceecb7a47ae2de925e0eac68, type: 3}
-  - {fileID: -6202488916469461938, guid: e90ccdf83abfbbf429b2624a1e01112b, type: 3}
-  - {fileID: -6202488916469461938, guid: 6eca17baae846ce4bbbc21dcbe66c417, type: 3}
-  - {fileID: -6202488916469461938, guid: d0c095a12460d9a4f9f1c0ecbfd3a08d, type: 3}
-  - {fileID: -6202488916469461938, guid: 2078a826926b1cd4589a13b5d0793a9e, type: 3}
-  - {fileID: -6202488916469461938, guid: 98c8e20ebf9efd34cb9122d4cb85bc4c, type: 3}
-  - {fileID: -6202488916469461938, guid: 845d5733aabeb264d95ea2ad0b4bd959, type: 3}
-  - {fileID: -6202488916469461938, guid: bed4f17dca130cc42b4d2f4936891d88, type: 3}
-  - {fileID: -6202488916469461938, guid: 91b871d300f30fc4588764de65ac6328, type: 3}
-  - {fileID: -6202488916469461938, guid: 4d2b1ee1094723943a3d94054e2717ec, type: 3}
-  - {fileID: -6202488916469461938, guid: c74453b0ce392b546b5ba4e767940d41, type: 3}
-  - {fileID: -6202488916469461938, guid: 02c0953dab3727c468c7addca7a8a04c, type: 3}
-  - {fileID: -6202488916469461938, guid: fab74df26f5255343a5cb5d2de4032b3, type: 3}
-  - {fileID: -6202488916469461938, guid: 993631093ce8be548b6bfbc7291cb07a, type: 3}
-  - {fileID: -6202488916469461938, guid: 8e7bb8f00d4c2144693d20569894fd6a, type: 3}
-  - {fileID: -6202488916469461938, guid: e6b02af4801ce9d45bb085d435066050, type: 3}
-  - {fileID: -6202488916469461938, guid: 2716abfd29255b6418ff2799b89f8696, type: 3}
+  - {fileID: -6202488916469461938, guid: fd9d5a3e291384e46b6412914dad7d53, type: 3}
+  - {fileID: -6202488916469461938, guid: 85d1da2a54da2ee4bbf838f0dd7a0c0b, type: 3}
+  - {fileID: -6202488916469461938, guid: 2850dc30a1d3eee47a0fd00b4298a6fb, type: 3}
+  - {fileID: -6202488916469461938, guid: 8ca1969a3f2264344aa51e01fe33d007, type: 3}
+  - {fileID: -6202488916469461938, guid: 0464d972fe12ffb40be5b365744db822, type: 3}
+  - {fileID: -6202488916469461938, guid: 3ba49b3fa367f374a8c49bf7aee7e628, type: 3}
+  - {fileID: -6202488916469461938, guid: fd30c87ae02c1754296feaf75a4499cb, type: 3}
+  - {fileID: -6202488916469461938, guid: c050a0f47368d6b45a316fef72b3a840, type: 3}
+  - {fileID: -6202488916469461938, guid: 6ca493b39103f1141850739ef077f123, type: 3}
+  - {fileID: -6202488916469461938, guid: 5a07c0f4c39a6e34c8b6255cbbff8cda, type: 3}
+  - {fileID: -6202488916469461938, guid: f65596f0fc241dc43ad28359864ea041, type: 3}
+  - {fileID: -6202488916469461938, guid: af2aee30db8f319489af4ba07ccafe9b, type: 3}
+  - {fileID: -6202488916469461938, guid: 0bfe0a5733b05c946a71c108dfb919d2, type: 3}
+  - {fileID: -6202488916469461938, guid: 0e95d1820131d8242b17e2e9891a8215, type: 3}
+  - {fileID: -6202488916469461938, guid: d1821183459ff0b4392efb4c302d470f, type: 3}
+  - {fileID: -6202488916469461938, guid: 45df76f5cfda82741ade92427f6d20db, type: 3}
+  - {fileID: -6202488916469461938, guid: 44d4778486b65114ab975d9e13612a20, type: 3}
+  - {fileID: -6202488916469461938, guid: 6aed43c29f74d414d95d82a383f6851d, type: 3}
+  - {fileID: -6202488916469461938, guid: 5c216560a8e166044b4f4bfe1f479df6, type: 3}
+  - {fileID: -6202488916469461938, guid: 95b79aabb2162ea409803cc1c4d81c37, type: 3}
+  - {fileID: -6202488916469461938, guid: 32830717bfbcef44fb37ed5bfdf33ead, type: 3}
+  - {fileID: -6202488916469461938, guid: 98a04f37015d5c547b74c880215937d9, type: 3}
+  - {fileID: -6202488916469461938, guid: d48966e0d148f6249bf47dc956a83306, type: 3}
+  - {fileID: -6202488916469461938, guid: a0a4a8a5159bbf44bbab0a8946d6b6b5, type: 3}
   handVisual: {fileID: 0}
   OnPoseEnter:
     m_PersistentCalls:
@@ -2172,7 +2173,7 @@ MonoBehaviour:
   OnPoseExit:
     m_PersistentCalls:
       m_Calls: []
-  currentEditorHandPose: {fileID: -6202488916469461938, guid: a4aa96af0f21e324cb49c18e070a20d8, type: 3}
+  currentEditorHandPose: {fileID: -6202488916469461938, guid: fd9d5a3e291384e46b6412914dad7d53, type: 3}
 --- !u!1001 &7585291731239725634
 PrefabInstance:
   m_ObjectHideFlags: 0

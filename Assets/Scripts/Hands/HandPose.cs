@@ -194,7 +194,6 @@ public class HandPose : MonoBehaviour
         if (!ignoreWristPosition &&
             Mathf.Abs((currentPosRelativeToCamera - _jointTransforms[0].position).magnitude) > toleranceRadius * toleranceMultiplier)
         {
-            Debug.Log($"Position Mismatch - {(wristWorldPose.position - Camera.main.transform.position).magnitude}");
             return false;
         }
 

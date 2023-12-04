@@ -55,12 +55,21 @@ public class HandPoseTracker : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        //Save current hand pose to prefab in currentEditorHandPose
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("Return");
+            EditorSaveHandPose();
+        }
+#endif
+
         //handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
 
         //NOT PERFORMANT, lots of loops as you add more poses
         //Maybe try a system that uses a temp list and goes through all wrist bones in each pose, remove any hand poses that don't match,
         //then continue to the next pose node but only for the HandPoses that matched at the wrist
-        foreach(HandPose pose in handPoseList)
+        foreach (HandPose pose in handPoseList)
         {
             //Check if HandPose matches current hand
             if (pose.CheckHandMatch(handCurrent, toleranceMultiplier))
@@ -83,15 +92,6 @@ public class HandPoseTracker : MonoBehaviour
                 pose.SetInPose(false);
             }
         }
-
-#if UNITY_EDITOR
-        //Save current hand pose to prefab in currentEditorHandPose
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log("Return");
-            EditorSaveHandPose();
-        }
-#endif
 
     }
 
