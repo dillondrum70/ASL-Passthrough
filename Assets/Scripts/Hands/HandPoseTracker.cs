@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using static OVRPlugin;
 
 public class HandPoseTracker : MonoBehaviour
 {
@@ -28,8 +29,15 @@ public class HandPoseTracker : MonoBehaviour
     //In case we want a difficulty toggle requiring more precise or less precise signs
     float toleranceMultiplier = 1f;
 
+    [Header("Debug")]
+
+    [SerializeField] bool debugDisplayHandPose = true;
+
+    HandPose debugPose;
 
 #if UNITY_EDITOR
+    [Header("Editor")]
+
     //Only used for editor to save current hand pose to this scriptable object
     public HandPose currentEditorHandPose;
 
@@ -51,6 +59,16 @@ public class HandPoseTracker : MonoBehaviour
         handCurrent = handVisual.Hand;
 
         handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
+    }
+
+    private void OnEnable()
+    {
+        OnPoseEnter.AddListener(DisplayHandPose);
+    }
+
+    private void OnDisable()
+    {
+        OnPoseEnter.RemoveListener(DisplayHandPose);
     }
 
     private void Update()
@@ -96,6 +114,33 @@ public class HandPoseTracker : MonoBehaviour
             }
         }
 
+        UpdateDisplayHandPose();
+    }
+
+    //Display the hand target hand pose
+    void DisplayHandPose(HandPose pose)
+    {
+        if (debugPose)
+        {
+            Destroy(debugPose.gameObject);
+        }
+
+        debugPose = Instantiate(pose);
+    }
+
+    void UpdateDisplayHandPose()
+    {
+        if (debugDisplayHandPose &&
+            debugPose != null)
+        {
+            Transform jointTransform = debugPose.GetJointTransform(0);
+
+            debugPose.transform.position = transform.position;
+        }
+        else if (debugPose)
+        {
+            debugPose.enabled = false;
+        }
     }
 
     /// <summary>

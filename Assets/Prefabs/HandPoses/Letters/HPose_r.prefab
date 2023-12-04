@@ -115,7 +115,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b8ba5262c2af57a4a981119ec207392a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1847,6 +1847,15 @@ MonoBehaviour:
   - {fileID: 3363545473616153365}
   - {fileID: 8805844459605918609}
   - {fileID: 8352749782868644811}
+  OnPoseEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPoseStay:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPoseExit:
+    m_PersistentCalls:
+      m_Calls: []
   handWristRoot: {fileID: 692669486064500202}
   handForearmStub: {fileID: 443601957361065890}
   handThumb0: {fileID: 719151936759336658}

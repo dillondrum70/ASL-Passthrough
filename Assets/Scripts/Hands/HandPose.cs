@@ -84,6 +84,8 @@ public class HandPose : MonoBehaviour
     public bool GetInPose() { return inPose; }
     public void SetInPose(bool inPose) { this.inPose = inPose; }
 
+    public Transform GetJointTransform(HandJointId handJointId) { return _jointTransforms[(int)handJointId]; }
+
     /// <summary>
     /// Clears joint transforms, resets those references, resets local poses, and resets world poses
     /// </summary>
