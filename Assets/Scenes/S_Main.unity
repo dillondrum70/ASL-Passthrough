@@ -578,8 +578,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -795,8 +795,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.988}
-  m_SizeDelta: {x: 225.8084, y: 24.0882}
+  m_AnchoredPosition: {x: 0, y: 0.994}
+  m_SizeDelta: {x: 146.519, y: 24.0882}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &506764672
 PrefabInstance:
@@ -2146,6 +2146,7 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 2850dc30a1d3eee47a0fd00b4298a6fb, type: 3}
   - {fileID: -6202488916469461938, guid: 8ca1969a3f2264344aa51e01fe33d007, type: 3}
   - {fileID: -6202488916469461938, guid: b5652a64c7d741b4597804c475ecd5db, type: 3}
+  - {fileID: -6202488916469461938, guid: 58787004765a7574a9477626f38d1088, type: 3}
   - {fileID: -6202488916469461938, guid: 0464d972fe12ffb40be5b365744db822, type: 3}
   - {fileID: -6202488916469461938, guid: 3ba49b3fa367f374a8c49bf7aee7e628, type: 3}
   - {fileID: -6202488916469461938, guid: fd30c87ae02c1754296feaf75a4499cb, type: 3}
@@ -2178,7 +2179,7 @@ MonoBehaviour:
       m_Calls: []
   debugDisplayHandPose: 1
   handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
-  currentEditorHandPose: {fileID: -6202488916469461938, guid: b5652a64c7d741b4597804c475ecd5db, type: 3}
+  currentEditorHandPose: {fileID: -6202488916469461938, guid: 58787004765a7574a9477626f38d1088, type: 3}
 --- !u!1001 &7585291731239725634
 PrefabInstance:
   m_ObjectHideFlags: 0
