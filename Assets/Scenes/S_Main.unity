@@ -2174,8 +2174,33 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 4d3514c6cd81e2d49ba9d22c743387c2, type: 3}
   - {fileID: -6202488916469461938, guid: 47b85730df30088468b936e40d907a64, type: 3}
   handGestureList:
-  - {fileID: 11400000, guid: 8b66ae5db7eef7e458436f3c67d05f00, type: 2}
+  - {fileID: 11400000, guid: 85b2e32c14ccffe48809de84b73072e7, type: 2}
+  - {fileID: 11400000, guid: 272ba269eb396a8439d687aaaf01524f, type: 2}
+  - {fileID: 11400000, guid: d55535697d6b8fc4e9ee1ead2832da9d, type: 2}
+  - {fileID: 11400000, guid: 776a20a6585052045b8a32c015551926, type: 2}
+  - {fileID: 11400000, guid: fd245d6295ab990458266d142f488c95, type: 2}
+  - {fileID: 11400000, guid: 542f82723281f4b45b7ef486afe6ba97, type: 2}
+  - {fileID: 11400000, guid: 90ecdcc34849ed5499a47225fb137d84, type: 2}
+  - {fileID: 11400000, guid: eb8d39f16ee36a14ea624af56547d09a, type: 2}
+  - {fileID: 11400000, guid: e51deb8408a8b4e4b820600e4cefecaf, type: 2}
+  - {fileID: 11400000, guid: 6368718f7f24de74c9c606b5b3b31d51, type: 2}
+  - {fileID: 11400000, guid: ece1c282075b1ec48b0ae3c2dcf978b6, type: 2}
+  - {fileID: 11400000, guid: 32f85591e15ae6640acbc1c074453ac9, type: 2}
+  - {fileID: 11400000, guid: 74ab7a6e5de729e48a72e97a56b0bfbe, type: 2}
+  - {fileID: 11400000, guid: 434070409e3572a4cb04b87e17a6b337, type: 2}
   - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
+  - {fileID: 11400000, guid: 8b66ae5db7eef7e458436f3c67d05f00, type: 2}
+  - {fileID: 11400000, guid: 4455516de69f4f24990c01594fd83c7e, type: 2}
+  - {fileID: 11400000, guid: b1c1e685e07f2cf45905e7c66244391d, type: 2}
+  - {fileID: 11400000, guid: a16b676e7829a01448d4c630b0471f2c, type: 2}
+  - {fileID: 11400000, guid: 514f0167e458b8c4c8bb59f844b9b50a, type: 2}
+  - {fileID: 11400000, guid: 50d75a5262f6edd4ea09bd46c7dab261, type: 2}
+  - {fileID: 11400000, guid: 5936b0565ba08bc409809fe6beda39d5, type: 2}
+  - {fileID: 11400000, guid: 3df2b1d6b65448b458e0508159c7167a, type: 2}
+  - {fileID: 11400000, guid: 83c4120604793684e92fd123ec27300b, type: 2}
+  - {fileID: 11400000, guid: 2495c23f289c9ce47b83110291546397, type: 2}
+  - {fileID: 11400000, guid: 90f2a05b36fc49449ad755de4ad64f84, type: 2}
+  - {fileID: 11400000, guid: 4c5441310d4451248bb73531223afdfe, type: 2}
   - {fileID: 11400000, guid: 0b713d9f5bdcf674c99e448ef9c9532a, type: 2}
   handVisual: {fileID: 0}
   OnPoseEnter:
