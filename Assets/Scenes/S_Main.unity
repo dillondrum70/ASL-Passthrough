@@ -511,8 +511,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   right: 0
-  handPoseList: []
-  handGestureList: []
+  handPoseList:
+  - {fileID: -6202488916469461938, guid: 9faa8af0f088a074fbd778a72d78bb1c, type: 3}
+  - {fileID: -6202488916469461938, guid: 8614c373b6f734242b1134f11e9dca84, type: 3}
+  - {fileID: -6202488916469461938, guid: 8b5c96024f394bf4ca59212d1f33ed3d, type: 3}
+  - {fileID: -6202488916469461938, guid: e65e679517c394b4891a8ec98bab801c, type: 3}
+  - {fileID: -6202488916469461938, guid: 877ecb620602e794b8cd5f8354f0297a, type: 3}
+  - {fileID: -6202488916469461938, guid: 682486ef80270ba4eb228f0b7116e3e7, type: 3}
+  - {fileID: -6202488916469461938, guid: 97dc2b5139f95a648995adfd64d8c13a, type: 3}
+  - {fileID: -6202488916469461938, guid: 17a6ceb2ca6c3cb4fafb367de83375c3, type: 3}
+  - {fileID: -6202488916469461938, guid: 93566c3173aab26499cc80ef481f5f35, type: 3}
+  - {fileID: -6202488916469461938, guid: 35247dce09ddb0a4a9c6bfd471c975f8, type: 3}
+  - {fileID: -6202488916469461938, guid: f90391aa3ecb29047bf3665c2d5405ee, type: 3}
+  - {fileID: -6202488916469461938, guid: 7c5d2c2ca079700479799167c9a8dba2, type: 3}
+  - {fileID: -6202488916469461938, guid: 55ebc11d23e97f141bff36b6b8f17d69, type: 3}
+  - {fileID: -6202488916469461938, guid: 9de6b68be0bb74541b8f3433f9f6a233, type: 3}
+  - {fileID: -6202488916469461938, guid: 2f6f260d14778d741b21ae9d43c7326f, type: 3}
+  - {fileID: -6202488916469461938, guid: 5d987772dd040de478f5c02bf1f397ae, type: 3}
+  - {fileID: -6202488916469461938, guid: 696bd54dbe6b08141b583ae40384a6a5, type: 3}
+  - {fileID: -6202488916469461938, guid: a2f02d6a09e91dd4f8ff38f7eb90b203, type: 3}
+  - {fileID: -6202488916469461938, guid: 228317a479fc24742b148e66bdad1222, type: 3}
+  - {fileID: -6202488916469461938, guid: c212a0ff449d2b846a86eddb5c1cd772, type: 3}
+  - {fileID: -6202488916469461938, guid: 21a2afe153bed7e4787edeca79602455, type: 3}
+  - {fileID: -6202488916469461938, guid: 45ad3982286d45341a250179c5fc1afd, type: 3}
+  - {fileID: -6202488916469461938, guid: 088e5a76bc7383941b9fec450a1f59ab, type: 3}
+  - {fileID: -6202488916469461938, guid: 2d46326958f27184ea4e4f8bb53d7f68, type: 3}
+  - {fileID: -6202488916469461938, guid: 174394e2a73fccc4f8c7dfd4919c1854, type: 3}
+  - {fileID: -6202488916469461938, guid: 1f64c6be3cb0e4b43b45491b4d5dfc82, type: 3}
+  - {fileID: -6202488916469461938, guid: 8e6525063715c6a41b20a4b4de335bb8, type: 3}
+  - {fileID: -6202488916469461938, guid: 08f8a8ad1acbd9c488d7e71a3103cc25, type: 3}
+  - {fileID: -6202488916469461938, guid: 3826bc1c20fb66b4d8d53e236dd45ac8, type: 3}
+  - {fileID: -6202488916469461938, guid: de230d1721971164a9b4d3bab1c45920, type: 3}
+  handGestureList:
+  - {fileID: 11400000, guid: a6b1b66bd428d90458bdb03f6ef5d5d9, type: 2}
+  - {fileID: 11400000, guid: 628e4b66e84e1464480538125db473ab, type: 2}
+  - {fileID: 11400000, guid: aa166cca1e279b1409b9fb5b8686cc97, type: 2}
+  - {fileID: 11400000, guid: a48d04188af2a4e43b589fd00ab8d48f, type: 2}
+  - {fileID: 11400000, guid: 085b070a4f2acf147bfa26f321ba6569, type: 2}
+  - {fileID: 11400000, guid: 116f015d6f79f55468da948b19d262fd, type: 2}
+  - {fileID: 11400000, guid: 148035d8dc83c44409159c1edfbdec3b, type: 2}
+  - {fileID: 11400000, guid: 32337c6aaaea2324db8b9403b7f02a1e, type: 2}
+  - {fileID: 11400000, guid: c33a98011da58e643b2be1af30270af1, type: 2}
+  - {fileID: 11400000, guid: 7569cd7daea384e428b81bfc0bc407e5, type: 2}
+  - {fileID: 11400000, guid: 16d19d7a530e74647a8b3e0733db8a24, type: 2}
+  - {fileID: 11400000, guid: c68920f4990e22a4b9aff52a88402a44, type: 2}
+  - {fileID: 11400000, guid: 6e9be80bd50d84f418e7b69a0a55f6dc, type: 2}
+  - {fileID: 11400000, guid: b1708014ab4e73648a890882836b1ace, type: 2}
+  - {fileID: 11400000, guid: 7b3295dbbbfbd8140b2aa4b45698ca03, type: 2}
+  - {fileID: 11400000, guid: 909a2e68cb19fe244a35c59c18a8239e, type: 2}
+  - {fileID: 11400000, guid: b9937fac9c62b77498955e1c12b778da, type: 2}
+  - {fileID: 11400000, guid: 113b24d69c08cb94fa16e2f69586d979, type: 2}
+  - {fileID: 11400000, guid: 9a788491ee5bd4546bc6f2f319f4adc7, type: 2}
+  - {fileID: 11400000, guid: 93603e03177dbac4a9505afef413ce82, type: 2}
+  - {fileID: 11400000, guid: 7337d75559aee4f498698d45da1ea2f6, type: 2}
+  - {fileID: 11400000, guid: 64836d9f83c14624e8ad1d90bddb7dc6, type: 2}
+  - {fileID: 11400000, guid: daaeb7f430fa17d46bcf8630a0163a30, type: 2}
+  - {fileID: 11400000, guid: f345843bd8b8582478b69c616ac4d508, type: 2}
+  - {fileID: 11400000, guid: 24bd7f2a073368343817200a8b779a96, type: 2}
+  - {fileID: 11400000, guid: 523c13709bb308747be999cac9b61d8b, type: 2}
+  - {fileID: 11400000, guid: 23a3dec14913d094cb5e8e5ddc76cd8b, type: 2}
+  - {fileID: 11400000, guid: ec74ffde24da5b3488615b6e9fae1ff6, type: 2}
   handVisual: {fileID: 0}
   palmTransform: {fileID: 2037588096}
   OnPoseEnter:
@@ -527,9 +585,32 @@ MonoBehaviour:
   OnGestureEnter:
     m_PersistentCalls:
       m_Calls: []
+  handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
   debugDisplayHandPose: 1
-  handPositionMarkerPrefab: {fileID: 0}
-  currentEditorHandPose: {fileID: 0}
+  debugDisplayHandTime: 4
+  modifyEditorHandPose: 1
+  currentEditorHandPose: {fileID: -6202488916469461938, guid: 9faa8af0f088a074fbd778a72d78bb1c, type: 3}
+--- !u!114 &262839957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262839951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a94894b3a4c7024490d13e1d38f52d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spells:
+  - gestures:
+    - {fileID: 11400000, guid: 7b3295dbbbfbd8140b2aa4b45698ca03, type: 2}
+    - {fileID: 11400000, guid: c33a98011da58e643b2be1af30270af1, type: 2}
+    - {fileID: 11400000, guid: 16d19d7a530e74647a8b3e0733db8a24, type: 2}
+    reversedGestures: []
+    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
+  signDelay: 1.5
+  spellSpawnPoint: {fileID: 668911362}
 --- !u!1 &301219495
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d38b311f193f65499cde4f756fbc801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handPoseTracker: {fileID: 2118942617}
+  trackers:
+  - {fileID: 2118942617}
+  - {fileID: 262839954}
   displayTime: 2
 --- !u!4 &309700193 stripped
 Transform:
@@ -1316,7 +1399,9 @@ MonoBehaviour:
   matOff: {fileID: 2100000, guid: 1204c9ab20ed6e74e9720261faa3e933, type: 2}
   matOn: {fileID: 2100000, guid: 865442f01052fe74e9eebd99d906e5ca, type: 2}
   matRed: {fileID: 2100000, guid: de56cc017e9292c4ba1622b335ce0ed5, type: 2}
-  handPoseTracker: {fileID: 2118942617}
+  handPoseTrackers:
+  - {fileID: 2118942617}
+  - {fileID: 262839954}
   redPoseName: Rock & Roll
   displayTime: 2
 --- !u!4 &889137270 stripped
@@ -2367,6 +2452,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 262839954}
+    - targetCorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 262839957}
     - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118942617}
@@ -2466,8 +2554,10 @@ MonoBehaviour:
   OnGestureEnter:
     m_PersistentCalls:
       m_Calls: []
-  debugDisplayHandPose: 1
   handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
+  debugDisplayHandPose: 1
+  debugDisplayHandTime: 4
+  modifyEditorHandPose: 0
   currentEditorHandPose: {fileID: -6202488916469461938, guid: 44d4778486b65114ab975d9e13612a20, type: 3}
 --- !u!114 &2118942620
 MonoBehaviour:

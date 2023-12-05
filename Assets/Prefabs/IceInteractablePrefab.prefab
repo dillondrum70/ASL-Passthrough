@@ -203,8 +203,8 @@ MonoBehaviour:
   OnRelease:
     m_PersistentCalls:
       m_Calls: []
-  throwForce: 60
-  maxDist: 20
+  throwForce: 100
+  maxDist: 5
 --- !u!1 &6906212521694101385
 GameObject:
   m_ObjectHideFlags: 0

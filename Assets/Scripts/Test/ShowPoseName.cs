@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ShowPoseName : MonoBehaviour
 {
-    [SerializeField] HandPoseTracker handPoseTracker;
+    [SerializeField] List<HandPoseTracker> trackers;
 
     TextMeshProUGUI textMesh;
 
@@ -21,14 +21,21 @@ public class ShowPoseName : MonoBehaviour
 
     private void OnEnable()
     {
-        handPoseTracker.OnGestureEnter.AddListener(OnEnter);
-        //handPoseTracker.OnPoseExit.AddListener(OnExit);
+        foreach (HandPoseTracker tracker in trackers)
+        {
+            tracker.OnGestureEnter.AddListener(OnEnter);
+            //handPoseTracker.OnPoseExit.AddListener(OnExit);
+        }
     }
 
     private void OnDisable()
     {
-        handPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
-        //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+        foreach (HandPoseTracker tracker in trackers)
+        {
+            tracker.OnGestureEnter.RemoveListener(OnEnter);
+            //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+        }
+
     }
 
     private void Update()

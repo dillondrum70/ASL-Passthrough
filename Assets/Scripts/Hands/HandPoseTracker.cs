@@ -44,17 +44,22 @@ public class HandPoseTracker : MonoBehaviour
     //In case we want a difficulty toggle requiring more precise or less precise signs
     float toleranceMultiplier = 1f;
 
+    //Displayed hand pose
+    HandPose displayPose;
+
+    [SerializeField] GameObject handPositionMarkerPrefab;
+    GameObject displayHandPositionMarker;
+
     [Header("Debug")]
 
     [SerializeField] bool debugDisplayHandPose = true;
-
-    HandPose debugPose;
-
-    [SerializeField] GameObject handPositionMarkerPrefab;
-    GameObject debugHandPositionMarker;
+    [SerializeField] float debugDisplayHandTime = 4f;
+    float currentDebugDisplayHandTime = 0;
 
 #if UNITY_EDITOR
     [Header("Editor")]
+
+    [SerializeField] bool modifyEditorHandPose = true;
 
     //Only used for editor to save current hand pose to this scriptable object
     public HandPose currentEditorHandPose;
@@ -188,17 +193,19 @@ public class HandPoseTracker : MonoBehaviour
     /// <param name="pose">Target pose to display</param>
     void DisplayHandPose(HandPose pose)
     {
-        if (debugPose)
+        if (displayPose)
         {
-            Destroy(debugHandPositionMarker.gameObject);
-            Destroy(debugPose.gameObject);
+            Destroy(displayHandPositionMarker.gameObject);
+            Destroy(displayPose.gameObject);
         }
 
-        debugPose = Instantiate(pose);
-        debugHandPositionMarker = Instantiate(handPositionMarkerPrefab);
+        currentDebugDisplayHandTime = debugDisplayHandTime;
 
-        float toleranceRadius = debugPose.GetToleranceRadius();
-        debugHandPositionMarker.transform.localScale = new Vector3(toleranceRadius, toleranceRadius, toleranceRadius);
+        displayPose = Instantiate(pose);
+        displayHandPositionMarker = Instantiate(handPositionMarkerPrefab);
+
+        float toleranceRadius = displayPose.GetToleranceRadius();
+        displayHandPositionMarker.transform.localScale = new Vector3(toleranceRadius, toleranceRadius, toleranceRadius);
     }
 
     /// <summary>
@@ -206,22 +213,34 @@ public class HandPoseTracker : MonoBehaviour
     /// </summary>
     void UpdateDisplayHandPose()
     {
-        if (debugDisplayHandPose &&
-            debugPose != null)
+        if (debugDisplayHandPose && //If settings allow for display hand and display pose is valid, move it
+            displayPose != null)
         {
-            debugPose.transform.position = Camera.main.transform.position;
-            debugPose.transform.rotation = Quaternion.Euler(
-                debugPose.transform.rotation.eulerAngles.x,
+            displayPose.transform.position = Camera.main.transform.position;
+            displayPose.transform.rotation = Quaternion.Euler(
+                displayPose.transform.rotation.eulerAngles.x,
                 Camera.main.transform.eulerAngles.y,
-                debugPose.transform.rotation.eulerAngles.z);
+                displayPose.transform.rotation.eulerAngles.z);
 
-            Transform jointTransform = debugPose.GetJointTransform(0);
-            debugHandPositionMarker.transform.position = jointTransform.position;
+            Transform jointTransform = displayPose.GetJointTransform(0);
+            displayHandPositionMarker.transform.position = jointTransform.position;
         }
-        else if (debugPose)
+        else if (displayPose)   //If display pose is valid, hide it
         {
-            debugPose.enabled = false;
-            debugHandPositionMarker.SetActive(false);
+            if (displayPose) { Destroy(displayPose.gameObject); }
+            if (displayHandPositionMarker) { Destroy(displayHandPositionMarker.gameObject); }
+        }
+
+        //After a set time, destroy the display pose
+        if(currentDebugDisplayHandTime >= 0)
+        {
+            currentDebugDisplayHandTime -= Time.deltaTime;
+
+            if(currentDebugDisplayHandTime < 0)
+            {
+                if(displayPose) {  Destroy(displayPose.gameObject); }
+                if(displayHandPositionMarker) { Destroy(displayHandPositionMarker.gameObject); }
+            }
         }
     }
 
@@ -242,7 +261,10 @@ public class HandPoseTracker : MonoBehaviour
     [ContextMenu("Save Hand Pose")]
     void EditorSaveHandPose()
     {
-        currentEditorHandPose.SetHandPose(handCurrent);
+        if(modifyEditorHandPose)
+        {
+            currentEditorHandPose.SetHandPose(handCurrent);
+        }
     }
 #endif
 

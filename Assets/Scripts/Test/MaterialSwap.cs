@@ -8,7 +8,7 @@ public class MaterialSwap : MonoBehaviour
 
     MeshRenderer meshRend;
 
-    [SerializeField] HandPoseTracker handPoseTracker;
+    [SerializeField] List<HandPoseTracker> handPoseTrackers;
 
     [SerializeField] string redPoseName = "";
 
@@ -23,29 +23,35 @@ public class MaterialSwap : MonoBehaviour
 
     private void OnEnable()
     {
-        handPoseTracker.OnGestureEnter.AddListener(OnEnter);
-        //handPoseTracker.OnPoseExit.AddListener(OnExit);
-
-        HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
-
-        if(redPose != null)
+        foreach(HandPoseTracker tracker in handPoseTrackers)
         {
-            //redPose.OnPoseEnter.AddListener(OnEnterRed);
-            //redPose.OnPoseExit.AddListener(OnExit);
+            tracker.OnGestureEnter.AddListener(OnEnter);
+            //handPoseTracker.OnPoseExit.AddListener(OnExit);
+
+            HandPose redPose = tracker.GetHandPose(redPoseName);
+
+            if (redPose != null)
+            {
+                //redPose.OnPoseEnter.AddListener(OnEnterRed);
+                //redPose.OnPoseExit.AddListener(OnExit);
+            }
         }
     }
 
     private void OnDisable()
     {
-        handPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
-        //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
-
-        HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
-
-        if(redPose != null )
+        foreach (HandPoseTracker tracker in handPoseTrackers)
         {
-            //redPose.OnPoseEnter.RemoveListener(OnEnterRed);
-            //redPose.OnPoseExit.RemoveListener(OnExit);
+            tracker.OnGestureEnter.RemoveListener(OnEnter);
+            //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+
+            HandPose redPose = tracker.GetHandPose(redPoseName);
+
+            if (redPose != null)
+            {
+                //redPose.OnPoseEnter.RemoveListener(OnEnterRed);
+                //redPose.OnPoseExit.RemoveListener(OnExit);
+            }
         }
     }
 
