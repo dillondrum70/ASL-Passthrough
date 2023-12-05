@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class SpellEffect : MonoBehaviour
 {
-    public abstract void CastSpell(HandPoseTracker handPoseTracker, Transform spellSpawn);
+    public abstract void CastSpell(Transform spellSpawn);
 }

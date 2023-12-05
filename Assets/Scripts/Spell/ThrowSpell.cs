@@ -1,6 +1,7 @@
 using Oculus.Interaction;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,8 +20,6 @@ public class ThrowSpell : MonoBehaviour
 
     [SerializeField] float throwForce = 10f;
     [SerializeField] float maxDist = 20f;
-
-    public void SetPalmTransform(Transform palmTrans) { this.palmTrans = palmTrans; }
 
     private void OnEnable()
     {
@@ -60,6 +59,16 @@ public class ThrowSpell : MonoBehaviour
 
     void GrabSpell()
     {
+        if (Vector3.Distance(HandSystem.LeftHandTracker.GetPalmTransform().position, transform.position) <
+            Vector3.Distance(HandSystem.RightHandTracker.GetPalmTransform().position, transform.position))
+        {
+            palmTrans = HandSystem.LeftHandTracker.GetPalmTransform();
+        }
+        else
+        {
+            palmTrans = HandSystem.RightHandTracker.GetPalmTransform();
+        }
+
         transform.position = palmTrans.position;
     }
 

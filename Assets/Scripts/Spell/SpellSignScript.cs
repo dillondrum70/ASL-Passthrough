@@ -100,7 +100,7 @@ public class SpellSignScript : MonoBehaviour
             //All poses match
             if (match)
             {
-                spellEffect.effect.CastSpell(handPoseTracker, spellSpawnPoint);
+                spellEffect.effect.CastSpell(spellSpawnPoint);
                 recentHandGestures.Clear();
             }
         }
