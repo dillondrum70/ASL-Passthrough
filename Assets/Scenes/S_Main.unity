@@ -493,6 +493,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4779998117587278, guid: e201a24a09e942042b93390d0444d728, type: 3}
   m_PrefabInstance: {fileID: 127637917}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &262839951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+  m_PrefabInstance: {fileID: 2118942615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &262839954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262839951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c416e88b27228f944bd45d9761ebc1cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  right: 0
+  handPoseList: []
+  handGestureList: []
+  handVisual: {fileID: 0}
+  palmTransform: {fileID: 2037588096}
+  OnPoseEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPoseStay:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPoseExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGestureEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  debugDisplayHandPose: 1
+  handPositionMarkerPrefab: {fileID: 0}
+  currentEditorHandPose: {fileID: 0}
 --- !u!1 &301219495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1065,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4632502700799338, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
   m_PrefabInstance: {fileID: 99012348}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &756421830 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3300481182575282763, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+  m_PrefabInstance: {fileID: 2118942615}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &807785924 stripped
 MonoBehaviour:
@@ -2030,6 +2072,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4150668574442040, guid: e201a24a09e942042b93390d0444d728, type: 3}
   m_PrefabInstance: {fileID: 127637917}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2037588095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2037588096}
+  m_Layer: 0
+  m_Name: SpellPalmCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2037588096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037588095}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.010183115, y: 0.018797394, z: -0.89118475, w: 0.45313656}
+  m_LocalPosition: {x: -0.0646, y: 0.0332, z: -0.0006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 756421830}
+  m_LocalEulerAnglesHint: {x: 1.391, y: 2.017, z: -126.072}
 --- !u!4 &2070493748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4492482335422584, guid: e201a24a09e942042b93390d0444d728, type: 3}
@@ -2180,6 +2253,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5545149144574972019, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 624093017}
+    - targetCorrespondingSourceObject: {fileID: 3300481182575282763, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2037588096}
     - targetCorrespondingSourceObject: {fileID: 9048238750646488156, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 564238443}
@@ -2190,6 +2266,9 @@ PrefabInstance:
       insertIndex: 18
       addedObject: {fileID: 477521966}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 262839954}
     - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118942617}

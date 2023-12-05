@@ -38,6 +38,7 @@ public class ThrowSpell : MonoBehaviour
 
     private void Update()
     {
+        //Destroy object if far away
         if(Vector3.Distance(Camera.main.transform.position, transform.position) > maxDist)
         {
             Destroy(gameObject);
