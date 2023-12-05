@@ -20,29 +20,29 @@ public class MaterialSwap : MonoBehaviour
 
     private void OnEnable()
     {
-        handPoseTracker.OnPoseEnter.AddListener(OnEnter);
-        handPoseTracker.OnPoseExit.AddListener(OnExit);
+        //handPoseTracker.OnPoseEnter.AddListener(OnEnter);
+        //handPoseTracker.OnPoseExit.AddListener(OnExit);
 
         HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
 
         if(redPose != null)
         {
-            redPose.OnPoseEnter.AddListener(OnEnterRed);
-            redPose.OnPoseExit.AddListener(OnExit);
+            //redPose.OnPoseEnter.AddListener(OnEnterRed);
+            //redPose.OnPoseExit.AddListener(OnExit);
         }
     }
 
     private void OnDisable()
     {
-        handPoseTracker.OnPoseEnter.RemoveListener(OnEnter);
-        handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+        //handPoseTracker.OnPoseEnter.RemoveListener(OnEnter);
+        //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
 
         HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
 
         if(redPose != null )
         {
-            redPose.OnPoseEnter.RemoveListener(OnEnterRed);
-            redPose.OnPoseExit.RemoveListener(OnExit);
+            //redPose.OnPoseEnter.RemoveListener(OnEnterRed);
+            //redPose.OnPoseExit.RemoveListener(OnExit);
         }
     }
 

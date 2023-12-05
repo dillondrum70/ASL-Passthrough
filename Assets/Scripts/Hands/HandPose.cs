@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using Oculus.Interaction.Input;
-using UnityEditor;
 using System;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteAlways]
 public class HandPose : MonoBehaviour
@@ -115,6 +118,57 @@ public class HandPose : MonoBehaviour
     }
 
     /// <summary>
+    /// Check that passed hand match is tolerable to this pose
+    /// </summary>
+    /// <param name="hand">Hand to check</param>
+    /// <param name="toleranceMultiplier">Multiplier for tolerance, lower value = lower tolerance, more difficult</param>
+    /// <returns></returns>
+    public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
+    {
+        //Get wrist local pose
+        hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
+        hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
+
+        Quaternion inverseCamQuat = Quaternion.Inverse(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
+        Vector3 currentPosRelativeToCamera = inverseCamQuat * (wristWorldPose.position - Camera.main.transform.position);
+
+        //Check wrist position is within the correct radius
+        if (!ignoreWristPosition &&
+            Mathf.Abs((currentPosRelativeToCamera - _jointTransforms[0].position).magnitude) > toleranceRadius * toleranceMultiplier)
+        {
+            return false;
+        }
+
+        //Check wrist rotation matches if not ignoring wrist rotation
+        if (!ignoreWristRotation)
+        {
+            //wrist pose is always static since it is local and it is the root so all the some
+            //transformations on the wrist instead come from the parent hand
+            Quaternion rot = wristWorldPose.rotation;
+            rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
+            if (Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)) > toleranceAngle * toleranceMultiplier)
+            {
+                return false;
+            }
+        }
+
+        //Check angle is acceptable for each joint
+        for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
+        {
+            //Check each joint local angle
+            hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
+            if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+#if UNITY_EDITOR
+
+    /// <summary>
     /// Used to set joints in hand pose to match those in the passed hand
     /// </summary>
     /// <param name="hand">Hand to be copied</param>
@@ -185,57 +239,6 @@ public class HandPose : MonoBehaviour
         PrefabUtility.SaveAsPrefabAsset(contentsRoot, assetPath);
         PrefabUtility.UnloadPrefabContents(contentsRoot);
     }
-
-
-    /// <summary>
-    /// Check that passed hand match is tolerable to this pose
-    /// </summary>
-    /// <param name="hand">Hand to check</param>
-    /// <param name="toleranceMultiplier">Multiplier for tolerance, lower value = lower tolerance, more difficult</param>
-    /// <returns></returns>
-    public bool CheckHandMatch(IHand hand, float toleranceMultiplier)
-    {
-        //Get wrist local pose
-        hand.GetJointPoseLocal(HandJointId.HandWristRoot, out Pose wristLocalPose);
-        hand.GetJointPose(HandJointId.HandWristRoot, out Pose wristWorldPose);
-
-        Quaternion inverseCamQuat = Quaternion.Inverse(Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0));
-        Vector3 currentPosRelativeToCamera = inverseCamQuat * (wristWorldPose.position - Camera.main.transform.position);
-
-        //Check wrist position is within the correct radius
-        if (!ignoreWristPosition &&
-            Mathf.Abs((currentPosRelativeToCamera - _jointTransforms[0].position).magnitude) > toleranceRadius * toleranceMultiplier)
-        {
-            return false;
-        }
-
-        //Check wrist rotation matches if not ignoring wrist rotation
-        if (!ignoreWristRotation)
-        {
-            //wrist pose is always static since it is local and it is the root so all the some
-            //transformations on the wrist instead come from the parent hand
-            Quaternion rot = wristWorldPose.rotation;
-            rot = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y - Camera.main.transform.eulerAngles.y, rot.eulerAngles.z);
-            if (Mathf.Abs(Quaternion.Angle(rot, _jointTransforms[0].transform.rotation)) > toleranceAngle * toleranceMultiplier)
-            {
-                return false;
-            }
-        }
-
-        //Check angle is acceptable for each joint
-        for (int i = 1; i < (int)HandJointId.HandMaxSkinnable; i++)
-        {
-            //Check each joint local angle
-            hand.GetJointPoseLocal((HandJointId)i, out Pose localPose);
-            if (Mathf.Abs(Quaternion.Angle(localPose.rotation, _jointTransforms[i].transform.localRotation)) > toleranceAngle * toleranceMultiplier)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
 
     private void OnDrawGizmos()
     {
@@ -312,4 +315,6 @@ public class HandPose : MonoBehaviour
             }
         }
     }
+
+#endif
 }

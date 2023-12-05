@@ -551,7 +551,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2156,6 +2156,7 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: f65596f0fc241dc43ad28359864ea041, type: 3}
   - {fileID: -6202488916469461938, guid: af2aee30db8f319489af4ba07ccafe9b, type: 3}
   - {fileID: -6202488916469461938, guid: 0bfe0a5733b05c946a71c108dfb919d2, type: 3}
+  - {fileID: -6202488916469461938, guid: 1fa947d84ba37524db6009e5b9bb81b0, type: 3}
   - {fileID: -6202488916469461938, guid: 0e95d1820131d8242b17e2e9891a8215, type: 3}
   - {fileID: -6202488916469461938, guid: d1821183459ff0b4392efb4c302d470f, type: 3}
   - {fileID: -6202488916469461938, guid: 45df76f5cfda82741ade92427f6d20db, type: 3}
@@ -2167,6 +2168,9 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 98a04f37015d5c547b74c880215937d9, type: 3}
   - {fileID: -6202488916469461938, guid: d48966e0d148f6249bf47dc956a83306, type: 3}
   - {fileID: -6202488916469461938, guid: a0a4a8a5159bbf44bbab0a8946d6b6b5, type: 3}
+  handGestureList:
+  - {fileID: 11400000, guid: 8b66ae5db7eef7e458436f3c67d05f00, type: 2}
+  - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
   handVisual: {fileID: 0}
   OnPoseEnter:
     m_PersistentCalls:
@@ -2177,9 +2181,12 @@ MonoBehaviour:
   OnPoseExit:
     m_PersistentCalls:
       m_Calls: []
+  OnGestureEnter:
+    m_PersistentCalls:
+      m_Calls: []
   debugDisplayHandPose: 1
   handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
-  currentEditorHandPose: {fileID: -6202488916469461938, guid: 58787004765a7574a9477626f38d1088, type: 3}
+  currentEditorHandPose: {fileID: -6202488916469461938, guid: 44d4778486b65114ab975d9e13612a20, type: 3}
 --- !u!1001 &7585291731239725634
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,22 +17,22 @@ public class ShowPoseName : MonoBehaviour
 
     private void OnEnable()
     {
-        handPoseTracker.OnPoseEnter.AddListener(OnEnter);
-        handPoseTracker.OnPoseExit.AddListener(OnExit);
+        handPoseTracker.OnGestureEnter.AddListener(OnEnter);
+        //handPoseTracker.OnPoseExit.AddListener(OnExit);
     }
 
     private void OnDisable()
     {
-        handPoseTracker.OnPoseEnter.RemoveListener(OnEnter);
-        handPoseTracker.OnPoseExit.RemoveListener(OnExit);
+        handPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
+        //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
     }
 
-    public void OnEnter(HandPose pose)
+    public void OnEnter(HandGesture gesture)
     {
-        textMesh.text = pose.GetDisplayName();
+        textMesh.text = gesture.GetDisplayName();
     }
 
-    public void OnExit(HandPose pose)
+    public void OnExit(HandGesture gesture)
     {
         textMesh.text = "";
     }

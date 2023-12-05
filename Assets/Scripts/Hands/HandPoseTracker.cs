@@ -6,22 +6,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.Events;
-using Unity.VisualScripting;
 using static OVRPlugin;
+
+public struct HandPoseData
+{
+    public float currentTime;
+    public HandPose pose;
+}
 
 public class HandPoseTracker : MonoBehaviour
 {
     [SerializeField] bool right = true;
 
     [SerializeField] public List<HandPose> handPoseList;
+    [SerializeField] public List<HandGesture> handGestureList;
+
+    List<HandPoseData> handPoseDataStack = new List<HandPoseData>();
 
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
+
+    HandPose currentPose = null;
 
     //Generic events fired for every pose
     public UnityEvent<HandPose> OnPoseEnter;
     public UnityEvent<HandPose> OnPoseStay;
     public UnityEvent<HandPose> OnPoseExit;
+
+    //Generic events fired for every gesture
+    public UnityEvent<HandGesture> OnGestureEnter;
 
     //Determines if hand is making a pose currently or not
     bool inPose = false;
@@ -43,25 +56,12 @@ public class HandPoseTracker : MonoBehaviour
 
     //Only used for editor to save current hand pose to this scriptable object
     public HandPose currentEditorHandPose;
-
-    //[Header("Debug Values")]
-
-    //[SerializeField] bool debugDrawBones = true;
-    //[SerializeField] float debugFingertipLength = 0.025f;
-
-    //[SerializeField] bool debugDrawJoints = true;
-    //[SerializeField] float debugJointRadius = .005f;
-
-    //[SerializeField] bool debugDrawTolerance = true;
-    //[SerializeField] float debugToleranceLength = .01f;
 #endif
 
     private void Start()
     {
         handVisual = GetComponentInParent<HandVisual>();
         handCurrent = handVisual.Hand;
-
-        handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
     }
 
     private void OnEnable()
@@ -85,12 +85,8 @@ public class HandPoseTracker : MonoBehaviour
         }
 #endif
 
-        //handCurrent.GetJointPoseLocal(Oculus.Interaction.Input.HandJointId.HandIndex1, out Pose index);
-
-        //NOT PERFORMANT, lots of loops as you add more poses
-        //Maybe try a system that uses a temp list and goes through all wrist bones in each pose, remove any hand poses that don't match,
-        //then continue to the next pose node but only for the HandPoses that matched at the wrist
-        foreach (HandPose pose in handPoseList)
+        //Get pose of current hand
+        foreach(HandPose pose in handPoseList)
         {
             //Check if HandPose matches current hand
             if (pose.CheckHandMatch(handCurrent, toleranceMultiplier))
@@ -98,22 +94,105 @@ public class HandPoseTracker : MonoBehaviour
                 //OnEnter
                 if (!pose.GetInPose())
                 {
-                    OnPoseEnter?.Invoke(pose);
-                    pose.OnPoseEnter?.Invoke(pose);
+                    //OnPoseEnter?.Invoke(pose);
+                    //pose.OnPoseEnter?.Invoke(pose);
                     inPose = true; //Hand tracker has logged a pose, general
                     pose.SetInPose(true); //This pose is the one that is logged
+
+                    currentPose = pose;
                 }
 
                 //OnStay
-                OnPoseStay?.Invoke(pose);
-                pose.OnPoseStay?.Invoke(pose);
+                //OnPoseStay?.Invoke(pose);
+                //pose.OnPoseStay?.Invoke(pose);
             }
             else if (pose.GetInPose()) //OnExit
             {
-                OnPoseExit?.Invoke(pose);
-                pose.OnPoseExit?.Invoke(pose);
+                //OnPoseExit?.Invoke(pose);
+                //pose.OnPoseExit?.Invoke(pose);
                 inPose = false;
                 pose.SetInPose(false);
+
+                currentPose = null;
+            }
+        }
+
+        //Do nothing if current pose is null
+        if (currentPose != null)
+        {
+            if (handPoseDataStack.Count <= 0 ||             //Stack is empty
+            handPoseDataStack[0].pose != currentPose)   //or Current pose does not match top of stack
+            {
+                //Add new pose data struct
+                HandPoseData poseData = new HandPoseData();
+
+                poseData.pose = currentPose;
+                poseData.currentTime = Time.deltaTime;
+
+                handPoseDataStack.Insert(0, poseData);
+            }
+            else if (handPoseDataStack[0].pose == currentPose) //Current pose matches pose on top of stack
+            {
+                //Pop off top element, increase time, push back to stack
+                HandPoseData data = handPoseDataStack[0];
+                data.currentTime += Time.deltaTime;
+                handPoseDataStack[0] = data;
+            }
+
+            //NOT PERFORMANT, lots of loops as you add more poses
+            //Maybe try a system that uses a temp list and goes through all wrist bones in each pose, remove any hand poses that don't match,
+            //then continue to the next pose node but only for the HandPoses that matched at the wrist
+            foreach (HandGesture gesture in handGestureList)
+            {
+                List<HandPose> poses = new(gesture.GetHandPoseList());
+                poses.Reverse();
+
+                //Check last pose hold time of gesture is shorter than we've been holding this pose
+                if(gesture.GetLastPoseHoldTime() > handPoseDataStack[0].currentTime)
+                {
+                    continue;
+                }
+                
+                //Check order of poses, ensure they match the most recent poses in the stack
+                bool match = true;
+                for(int i = 0; i < poses.Count; i++)
+                {
+                    //Exit loop if stack is shorter than pose list or a pose does not match, move to next pose or exit and accept if at end of pose list
+                    if (i >= handPoseDataStack.Count || poses[i] != handPoseDataStack[i].pose)
+                    {
+                        match = false;
+                        break;
+                    }
+
+                    ////Check if HandPose matches current hand
+                    //if (pose.CheckHandMatch(handCurrent, toleranceMultiplier))
+                    //{
+                    //    //OnEnter
+                    //    if (!pose.GetInPose())
+                    //    {
+                    //        OnPoseEnter?.Invoke(pose);
+                    //        pose.OnPoseEnter?.Invoke(pose);
+                    //        inPose = true; //Hand tracker has logged a pose, general
+                    //        pose.SetInPose(true); //This pose is the one that is logged
+                    //    }
+
+                    //    //OnStay
+                    //    OnPoseStay?.Invoke(pose);
+                    //    pose.OnPoseStay?.Invoke(pose);
+                    //}
+                    //else if (pose.GetInPose()) //OnExit
+                    //{
+                    //    OnPoseExit?.Invoke(pose);
+                    //    pose.OnPoseExit?.Invoke(pose);
+                    //    inPose = false;
+                    //    pose.SetInPose(false);
+                    //}
+                }
+
+                if(match)
+                {
+                    OnGestureEnter?.Invoke(gesture);
+                }
             }
         }
 
@@ -157,6 +236,8 @@ public class HandPoseTracker : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+
     /// <summary>
     /// Save current hand pose to the passed HandPose, for use when calibrating signs
     /// </summary>
@@ -166,7 +247,6 @@ public class HandPoseTracker : MonoBehaviour
         pose.SetHandPose(handCurrent);
     }
 
-#if UNITY_EDITOR
     /// <summary>
     /// Save current hand pose to prefab in currentEditorHandPose
     /// </summary>
