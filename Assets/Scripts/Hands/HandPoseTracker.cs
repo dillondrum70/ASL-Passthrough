@@ -178,7 +178,10 @@ public class HandPoseTracker : MonoBehaviour
         UpdateDisplayHandPose();
     }
 
-    //Display the hand target hand pose
+    /// <summary>
+    /// Display the hand target hand pose
+    /// </summary>
+    /// <param name="pose">Target pose to display</param>
     void DisplayHandPose(HandPose pose)
     {
         if (debugPose)
@@ -194,6 +197,9 @@ public class HandPoseTracker : MonoBehaviour
         debugHandPositionMarker.transform.localScale = new Vector3(toleranceRadius, toleranceRadius, toleranceRadius);
     }
 
+    /// <summary>
+    /// Update position and rotation of the displayed hand pose
+    /// </summary>
     void UpdateDisplayHandPose()
     {
         if (debugDisplayHandPose &&

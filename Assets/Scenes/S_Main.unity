@@ -2123,6 +2123,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118942617}
+    - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2118942620}
   m_SourcePrefab: {fileID: 100100000, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
 --- !u!1 &2118942616 stripped
 GameObject:
@@ -2218,6 +2221,24 @@ MonoBehaviour:
   debugDisplayHandPose: 1
   handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
   currentEditorHandPose: {fileID: -6202488916469461938, guid: 44d4778486b65114ab975d9e13612a20, type: 3}
+--- !u!114 &2118942620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118942616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a94894b3a4c7024490d13e1d38f52d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spells:
+  - gestures:
+    - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
+    - {fileID: 11400000, guid: e51deb8408a8b4e4b820600e4cefecaf, type: 2}
+    - {fileID: 11400000, guid: ece1c282075b1ec48b0ae3c2dcf978b6, type: 2}
+    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
 --- !u!1001 &7585291731239725634
 PrefabInstance:
   m_ObjectHideFlags: 0
