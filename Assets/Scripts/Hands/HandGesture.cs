@@ -18,7 +18,7 @@ public class HandGesture : ScriptableObject
 
 
     public string GetDisplayName() { return displayName; }
-    public List<HandPose> GetHandPoseList() {return handPoseList; }
+    public List<HandPose> GetHandPoseList() { return handPoseList; }
     public float GetLastPoseHoldTime() { return lastPoseHoldTime;}
 
 

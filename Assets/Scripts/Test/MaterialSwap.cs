@@ -12,6 +12,9 @@ public class MaterialSwap : MonoBehaviour
 
     [SerializeField] string redPoseName = "";
 
+    [SerializeField] float displayTime = 2f;
+    float currentTime = 0;
+
     private void Start()
     {
         meshRend = GetComponent<MeshRenderer>();
@@ -20,7 +23,7 @@ public class MaterialSwap : MonoBehaviour
 
     private void OnEnable()
     {
-        //handPoseTracker.OnPoseEnter.AddListener(OnEnter);
+        handPoseTracker.OnGestureEnter.AddListener(OnEnter);
         //handPoseTracker.OnPoseExit.AddListener(OnExit);
 
         HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
@@ -34,7 +37,7 @@ public class MaterialSwap : MonoBehaviour
 
     private void OnDisable()
     {
-        //handPoseTracker.OnPoseEnter.RemoveListener(OnEnter);
+        handPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
         //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
 
         HandPose redPose = handPoseTracker.GetHandPose(redPoseName);
@@ -46,8 +49,21 @@ public class MaterialSwap : MonoBehaviour
         }
     }
 
-    public void OnEnter(HandPose pose)
+    private void Update()
     {
+        if (currentTime <= 0)
+        {
+            meshRend.material = matOff;
+        }
+        else
+        {
+            currentTime -= Time.deltaTime;
+        }
+    }
+
+    public void OnEnter(HandGesture gesture)
+    {
+        currentTime = displayTime;
         meshRend.material = matOn;
     }
 
@@ -58,6 +74,7 @@ public class MaterialSwap : MonoBehaviour
 
     public void OnEnterRed(HandPose pose)
     {
+        currentTime = displayTime;
         meshRend.material = matRed;
     }
 }

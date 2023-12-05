@@ -641,6 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handPoseTracker: {fileID: 2118942617}
+  displayTime: 2
 --- !u!4 &309700193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4325499800668186, guid: c6a74181d4000004887343fb87b3c53a, type: 3}
@@ -1203,6 +1204,7 @@ MonoBehaviour:
   matRed: {fileID: 2100000, guid: de56cc017e9292c4ba1622b335ce0ed5, type: 2}
   handPoseTracker: {fileID: 2118942617}
   redPoseName: Rock & Roll
+  displayTime: 2
 --- !u!4 &889137270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4154509707602826, guid: e201a24a09e942042b93390d0444d728, type: 3}
@@ -2168,9 +2170,13 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 98a04f37015d5c547b74c880215937d9, type: 3}
   - {fileID: -6202488916469461938, guid: d48966e0d148f6249bf47dc956a83306, type: 3}
   - {fileID: -6202488916469461938, guid: a0a4a8a5159bbf44bbab0a8946d6b6b5, type: 3}
+  - {fileID: -6202488916469461938, guid: a46da75345e5b5d47b49a53092b3f0f8, type: 3}
+  - {fileID: -6202488916469461938, guid: 4d3514c6cd81e2d49ba9d22c743387c2, type: 3}
+  - {fileID: -6202488916469461938, guid: 47b85730df30088468b936e40d907a64, type: 3}
   handGestureList:
   - {fileID: 11400000, guid: 8b66ae5db7eef7e458436f3c67d05f00, type: 2}
   - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
+  - {fileID: 11400000, guid: 0b713d9f5bdcf674c99e448ef9c9532a, type: 2}
   handVisual: {fileID: 0}
   OnPoseEnter:
     m_PersistentCalls:

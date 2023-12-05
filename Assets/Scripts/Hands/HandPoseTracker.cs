@@ -94,7 +94,7 @@ public class HandPoseTracker : MonoBehaviour
                 //OnEnter
                 if (!pose.GetInPose())
                 {
-                    //OnPoseEnter?.Invoke(pose);
+                    OnPoseEnter?.Invoke(pose);
                     //pose.OnPoseEnter?.Invoke(pose);
                     inPose = true; //Hand tracker has logged a pose, general
                     pose.SetInPose(true); //This pose is the one that is logged
@@ -103,12 +103,12 @@ public class HandPoseTracker : MonoBehaviour
                 }
 
                 //OnStay
-                //OnPoseStay?.Invoke(pose);
+                OnPoseStay?.Invoke(pose);
                 //pose.OnPoseStay?.Invoke(pose);
             }
             else if (pose.GetInPose()) //OnExit
             {
-                //OnPoseExit?.Invoke(pose);
+                OnPoseExit?.Invoke(pose);
                 //pose.OnPoseExit?.Invoke(pose);
                 inPose = false;
                 pose.SetInPose(false);
@@ -148,8 +148,9 @@ public class HandPoseTracker : MonoBehaviour
                 poses.Reverse();
 
                 //Check last pose hold time of gesture is shorter than we've been holding this pose
-                if(gesture.GetLastPoseHoldTime() > handPoseDataStack[0].currentTime)
+                if(handPoseDataStack.Count < poses.Count || gesture.GetLastPoseHoldTime() > handPoseDataStack[0].currentTime)
                 {
+                    //Skip this gesture
                     continue;
                 }
                 
@@ -158,40 +159,18 @@ public class HandPoseTracker : MonoBehaviour
                 for(int i = 0; i < poses.Count; i++)
                 {
                     //Exit loop if stack is shorter than pose list or a pose does not match, move to next pose or exit and accept if at end of pose list
-                    if (i >= handPoseDataStack.Count || poses[i] != handPoseDataStack[i].pose)
+                    if (poses[i] != handPoseDataStack[i].pose)
                     {
                         match = false;
                         break;
                     }
-
-                    ////Check if HandPose matches current hand
-                    //if (pose.CheckHandMatch(handCurrent, toleranceMultiplier))
-                    //{
-                    //    //OnEnter
-                    //    if (!pose.GetInPose())
-                    //    {
-                    //        OnPoseEnter?.Invoke(pose);
-                    //        pose.OnPoseEnter?.Invoke(pose);
-                    //        inPose = true; //Hand tracker has logged a pose, general
-                    //        pose.SetInPose(true); //This pose is the one that is logged
-                    //    }
-
-                    //    //OnStay
-                    //    OnPoseStay?.Invoke(pose);
-                    //    pose.OnPoseStay?.Invoke(pose);
-                    //}
-                    //else if (pose.GetInPose()) //OnExit
-                    //{
-                    //    OnPoseExit?.Invoke(pose);
-                    //    pose.OnPoseExit?.Invoke(pose);
-                    //    inPose = false;
-                    //    pose.SetInPose(false);
-                    //}
                 }
 
+                //All poses match
                 if(match)
                 {
                     OnGestureEnter?.Invoke(gesture);
+                    handPoseDataStack.Clear();
                 }
             }
         }
@@ -264,9 +243,24 @@ public class HandPoseTracker : MonoBehaviour
     /// <returns></returns>
     public HandPose GetHandPose(string displayName)
     {
-        foreach(HandPose pose in handPoseList)
+        foreach (HandPose pose in handPoseList)
         {
             if (pose.GetDisplayName() == displayName) return pose;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Search list of valid gestures based on the display names in each gesture
+    /// </summary>
+    /// <param name="displayName">Name to search for</param>
+    /// <returns></returns>
+    public HandGesture GetHandGesture(string displayName)
+    {
+        foreach (HandGesture gesture in handGestureList)
+        {
+            if (gesture.GetDisplayName() == displayName) return gesture;
         }
 
         return null;

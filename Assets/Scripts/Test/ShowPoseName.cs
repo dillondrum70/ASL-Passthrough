@@ -10,6 +10,10 @@ public class ShowPoseName : MonoBehaviour
 
     TextMeshProUGUI textMesh;
 
+    [SerializeField] float displayTime = 2f;
+
+    float currentTime = 0;
+
     private void Start()
     {
         textMesh = GetComponent<TextMeshProUGUI>();
@@ -27,9 +31,22 @@ public class ShowPoseName : MonoBehaviour
         //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
     }
 
+    private void Update()
+    {
+        if(currentTime <= 0)
+        {
+            textMesh.text = "";
+        }
+        else
+        {
+            currentTime -= Time.deltaTime;
+        }
+    }
+
     public void OnEnter(HandGesture gesture)
     {
         textMesh.text = gesture.GetDisplayName();
+        currentTime = displayTime;
     }
 
     public void OnExit(HandGesture gesture)
