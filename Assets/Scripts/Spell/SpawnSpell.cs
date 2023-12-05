@@ -6,9 +6,10 @@ public class SpawnSpell : SpellEffect
 {
     [SerializeField] GameObject prefab;
 
-    public override void CastSpell()
+    public override void CastSpell(HandPoseTracker handPoseTracker, Transform spellSpawn)
     {
         Debug.Log("CastSpell");
-        Instantiate(prefab);
+        ThrowSpell tSpell = Instantiate(prefab, spellSpawn.position, spellSpawn.rotation).GetComponent<ThrowSpell>();
+        tSpell.SetPalmTransform(handPoseTracker.GetPalmTransform());
     }
 }

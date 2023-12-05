@@ -26,6 +26,8 @@ public class HandPoseTracker : MonoBehaviour
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
 
+    [SerializeField] Transform palmTransform;
+
     HandPose currentPose = null;
 
     //Generic events fired for every pose
@@ -57,6 +59,8 @@ public class HandPoseTracker : MonoBehaviour
     //Only used for editor to save current hand pose to this scriptable object
     public HandPose currentEditorHandPose;
 #endif
+
+    public Transform GetPalmTransform() { return palmTransform; }
 
     private void Start()
     {

@@ -25,6 +25,8 @@ public class SpellSignScript : MonoBehaviour
     [SerializeField] float signDelay = 1f;
     float currentDelay = 0f;
 
+    [SerializeField] Transform spellSpawnPoint;
+
     private void Start()
     {
         for(int i = 0; i < spells.Count; i++)
@@ -50,6 +52,7 @@ public class SpellSignScript : MonoBehaviour
 
     private void Update()
     {
+        //Update delay timer
         if(currentDelay > 0f)
         {
             currentDelay -= Time.deltaTime;
@@ -97,7 +100,7 @@ public class SpellSignScript : MonoBehaviour
             //All poses match
             if (match)
             {
-                spellEffect.effect.CastSpell();
+                spellEffect.effect.CastSpell(handPoseTracker, spellSpawnPoint);
                 recentHandGestures.Clear();
             }
         }
