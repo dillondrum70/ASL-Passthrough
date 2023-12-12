@@ -590,7 +590,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   right: 0
   handPoseList:
-  - {fileID: -6202488916469461938, guid: 9faa8af0f088a074fbd778a72d78bb1c, type: 3}
   - {fileID: -6202488916469461938, guid: 8614c373b6f734242b1134f11e9dca84, type: 3}
   - {fileID: -6202488916469461938, guid: 8b5c96024f394bf4ca59212d1f33ed3d, type: 3}
   - {fileID: -6202488916469461938, guid: e65e679517c394b4891a8ec98bab801c, type: 3}
@@ -2467,7 +2466,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   right: 1
   handPoseList:
-  - {fileID: -6202488916469461938, guid: fd9d5a3e291384e46b6412914dad7d53, type: 3}
   - {fileID: -6202488916469461938, guid: 85d1da2a54da2ee4bbf838f0dd7a0c0b, type: 3}
   - {fileID: -6202488916469461938, guid: 2850dc30a1d3eee47a0fd00b4298a6fb, type: 3}
   - {fileID: -6202488916469461938, guid: 8ca1969a3f2264344aa51e01fe33d007, type: 3}
