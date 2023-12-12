@@ -27,7 +27,7 @@ public class HandGesture : ScriptableObject, IHandGesture
         poses.Reverse();
 
         //Check last pose hold time of gesture is shorter than we've been holding this pose
-        if (stack.Count < poses.Count || lastPoseHoldTime > stack[0].currentTime)
+        if (stack.Count < poses.Count || lastPoseHoldTime > stack[0].elapsedTime)
         {
             //Skip this gesture
             return false;

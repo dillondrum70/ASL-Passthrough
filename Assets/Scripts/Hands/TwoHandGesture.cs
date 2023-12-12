@@ -34,8 +34,8 @@ public class TwoHandGesture : ScriptableObject, IHandGesture
 
         //Check last pose hold time of gesture is shorter than we've been holding this pose
         if (leftPoses.Count != rightPoses.Count ||  //Number of poses in each hand MUST match
-            leftStack.Count < leftPoses.Count || leftHandGesture.GetLastPoseHoldTime() > leftStack[0].currentTime ||
-            rightStack.Count < rightPoses.Count || rightHandGesture.GetLastPoseHoldTime() > rightStack[0].currentTime)
+            leftStack.Count < leftPoses.Count || leftHandGesture.GetLastPoseHoldTime() > leftStack[0].elapsedTime ||
+            rightStack.Count < rightPoses.Count || rightHandGesture.GetLastPoseHoldTime() > rightStack[0].elapsedTime)
         {
             //Skip this gesture
             return false;
@@ -48,7 +48,8 @@ public class TwoHandGesture : ScriptableObject, IHandGesture
             //Exit loop if stack is shorter than pose list or a pose does not match, move to next pose or exit and accept if at end of pose list
             if (leftPoses[i] != leftStack[i].pose ||    //Left pose matches stack
                 rightPoses[i] != rightStack[i].pose ||  //Right pose matches stack
-                Mathf.Abs(leftStack[i].currentTime - rightStack[i].currentTime) > timeBetweenHandsTolerance) //All but the first pose between each hand happened within a certain amount of time of each other
+                Mathf.Abs(leftStack[i].elapsedTime - rightStack[i].elapsedTime) > timeBetweenHandsTolerance || //All but the first pose between each hand happened within a certain amount of time of each other
+                Mathf.Abs(leftStack[i].startTime - rightStack[i].startTime) > timeBetweenHandsTolerance)
             {
                 match = false;
                 break;

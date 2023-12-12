@@ -161,6 +161,7 @@ MonoBehaviour:
   rightTracker: {fileID: 2118942617}
   twoHandGestureList:
   - {fileID: 11400000, guid: 000b3fe657e63a141b46b0e7baa82a07, type: 2}
+  - {fileID: 11400000, guid: 12994baf4edf0d84cb1a83303ded153c, type: 2}
   OnGestureEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -595,6 +596,8 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: de230d1721971164a9b4d3bab1c45920, type: 3}
   - {fileID: -6202488916469461938, guid: fc32ddc3e3058504c8d1be6f8c743fba, type: 3}
   - {fileID: -6202488916469461938, guid: ee9c9b9a5e34b804fa5298c763d5564c, type: 3}
+  - {fileID: -6202488916469461938, guid: ac9c6a000fcee384f98d925d12fbbc04, type: 3}
+  - {fileID: -6202488916469461938, guid: 4dd64d620ea23cc4a92c4b910c388264, type: 3}
   handGestureList:
   - {fileID: 11400000, guid: a6b1b66bd428d90458bdb03f6ef5d5d9, type: 2}
   - {fileID: 11400000, guid: 628e4b66e84e1464480538125db473ab, type: 2}
@@ -2497,6 +2500,8 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 47b85730df30088468b936e40d907a64, type: 3}
   - {fileID: -6202488916469461938, guid: 57a11cd0b1194e94bb4e3dd952d6a5b7, type: 3}
   - {fileID: -6202488916469461938, guid: ca6b2b9c827326c4f807f012d9d04dfc, type: 3}
+  - {fileID: -6202488916469461938, guid: d7f4d2f8b53932941a0e3eb31aeba34a, type: 3}
+  - {fileID: -6202488916469461938, guid: 37d0379f5a393574f83b19fa9ced2dc1, type: 3}
   handGestureList:
   - {fileID: 11400000, guid: 85b2e32c14ccffe48809de84b73072e7, type: 2}
   - {fileID: 11400000, guid: 272ba269eb396a8439d687aaaf01524f, type: 2}

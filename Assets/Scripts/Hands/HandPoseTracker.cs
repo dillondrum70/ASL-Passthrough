@@ -8,12 +8,19 @@ using UnityEngine.XR;
 using UnityEngine.Events;
 using static OVRPlugin;
 
+/// <summary>
+/// Data about a hand pose in a specific frame
+/// </summary>
 public struct HandPoseData
 {
-    public float currentTime;
-    public HandPose pose;
+    public float startTime;     //Time at which this hand pose was first made
+    public float elapsedTime;   //How long this pose has been held
+    public HandPose pose;       //Pose being held
 }
 
+/// <summary>
+/// Component for tracking hand positions on a single hand
+/// </summary>
 public class HandPoseTracker : MonoBehaviour
 {
     [SerializeField] bool right = true;
@@ -161,7 +168,8 @@ public class HandPoseTracker : MonoBehaviour
             HandPoseData poseData = new HandPoseData();
 
             poseData.pose = currentPose;
-            poseData.currentTime = Time.deltaTime;
+            poseData.elapsedTime = Time.deltaTime;
+            poseData.startTime = Time.realtimeSinceStartup;
 
             handPoseDataStack.Insert(0, poseData);
         }
@@ -169,7 +177,7 @@ public class HandPoseTracker : MonoBehaviour
         {
             //Pop off top element, increase time, push back to stack
             HandPoseData data = handPoseDataStack[0];
-            data.currentTime += Time.deltaTime;
+            data.elapsedTime += Time.deltaTime;
             handPoseDataStack[0] = data;
         }
     }
