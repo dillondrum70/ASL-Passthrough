@@ -47,7 +47,9 @@ public class TwoHandGesture : Gesture
         {
             //Exit loop if stack is shorter than pose list or a pose does not match, move to next pose or exit and accept if at end of pose list
             if (leftPoses[i] != leftStack[i].pose ||    //Left pose matches stack
+                leftStack[i].timeBetweenPoses > leftHandGesture.GetNullTimeTolerance() ||  //Too much null time between left key poses
                 rightPoses[i] != rightStack[i].pose ||  //Right pose matches stack
+                rightStack[i].timeBetweenPoses > rightHandGesture.GetNullTimeTolerance() ||  //Too much null time between right key poses
                 (i < leftPoses.Count - 1 &&
                 (Mathf.Abs(leftStack[i].elapsedTime - rightStack[i].elapsedTime) > timeBetweenHandsTolerance || //All but the first pose between each hand happened within a certain amount of time of each other
                 Mathf.Abs(leftStack[i].startTime - rightStack[i].startTime) > timeBetweenHandsTolerance)))

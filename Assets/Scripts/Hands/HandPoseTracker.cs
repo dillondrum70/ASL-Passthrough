@@ -7,15 +7,18 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.Events;
 using static OVRPlugin;
+using System;
 
 /// <summary>
 /// Data about a hand pose in a specific frame
 /// </summary>
+[Serializable]
 public struct HandPoseData
 {
-    public float startTime;     //Time at which this hand pose was first made
-    public float elapsedTime;   //How long this pose has been held
-    public HandPose pose;       //Pose being held
+    public float startTime;         //Time at which this hand pose was first made
+    public float elapsedTime;       //How long this pose has been held
+    public float timeBetweenPoses;  //How long there was a null pose (no known hand pose) between this pose and the next (above this element in the stack)
+    public HandPose pose;           //Pose being held
 }
 
 /// <summary>
@@ -28,7 +31,7 @@ public class HandPoseTracker : MonoBehaviour
     [SerializeField] public List<HandPose> handPoseList;
     [SerializeField] public List<HandGesture> handGestureList;
 
-    List<HandPoseData> handPoseDataStack = new List<HandPoseData>();
+    public List<HandPoseData> handPoseDataStack = new List<HandPoseData>();
 
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
@@ -159,27 +162,63 @@ public class HandPoseTracker : MonoBehaviour
     /// </summary>
     public void UpdateStack()
     {
-        if (currentPose == null) { return; }
+        //Need to include null poses so we know for how long there was a pause between poses
+        //if (currentPose == null) { return; }
 
-        if (handPoseDataStack.Count <= 0 ||             //Stack is empty
-            handPoseDataStack[0].pose != currentPose)   //or Current pose does not match top of stack
+        if (handPoseDataStack.Count <= 0)   //Stack is empty
         {
-            //Add new pose data struct
-            HandPoseData poseData = new HandPoseData();
+            //If pose is not null, add to stack
+            if (currentPose != null)
+            {
+                AddNewStackElement();
+            }
 
-            poseData.pose = currentPose;
-            poseData.elapsedTime = Time.deltaTime;
-            poseData.startTime = Time.realtimeSinceStartup;
-
-            handPoseDataStack.Insert(0, poseData);
+            //Else Do Nothing
+        }
+        else if (handPoseDataStack[0].pose != currentPose)   //or Current pose does not match top of stack, stack stored pose can never be null
+        {
+            if (currentPose == null)    //If pose is null, track time
+            {
+                //Pop off top element, increase time between poses, push back to stack
+                HandPoseData data = handPoseDataStack[0];
+                data.timeBetweenPoses += Time.deltaTime;
+                handPoseDataStack[0] = data;
+            }
+            else    //If pose is not null but inequal, create a new stack element
+            {
+                AddNewStackElement();
+            } 
         }
         else if (handPoseDataStack[0].pose == currentPose) //Current pose matches pose on top of stack
         {
-            //Pop off top element, increase time, push back to stack
-            HandPoseData data = handPoseDataStack[0];
-            data.elapsedTime += Time.deltaTime;
-            handPoseDataStack[0] = data;
+            if(handPoseDataStack[0].timeBetweenPoses > 0)   //If any null space between this and last pose, create new stack element
+            {
+                AddNewStackElement();
+            }
+            else //Last frame was this pose and this frame was this pose, just increase elapsed time
+            {
+                //Pop off top element, increase time, push back to stack
+                HandPoseData data = handPoseDataStack[0];
+                data.elapsedTime += Time.deltaTime;
+                handPoseDataStack[0] = data;
+            }
         }
+    }
+
+    /// <summary>
+    /// Used in UpdateStack, adds a new HandPoseData struct with the current time values and pose
+    /// </summary>
+    void AddNewStackElement()
+    {
+        //Add new pose data struct
+        HandPoseData poseData = new HandPoseData();
+
+        poseData.pose = currentPose;
+        poseData.elapsedTime = Time.deltaTime;
+        poseData.startTime = Time.realtimeSinceStartup;
+        poseData.timeBetweenPoses = 0;
+
+        handPoseDataStack.Insert(0, poseData);
     }
 
     /// <summary>

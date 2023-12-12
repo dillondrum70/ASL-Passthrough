@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class SpellCastComponent : MonoBehaviour
 {
     TwoHandPoseTracker twoHandPoseTracker;
@@ -12,7 +10,7 @@ public class SpellCastComponent : MonoBehaviour
     [SerializeField] List<Spell> spells;
 
     //Most recent signs inserted at index 0
-    List<Gesture> recentHandGestures = new List<Gesture>();
+    public List<Gesture> recentHandGestures = new List<Gesture>();
 
     //Seconds to wait before allowing the same sign again
     [SerializeField] float signDelay = 1f;
