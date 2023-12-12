@@ -1881,7 +1881,7 @@ MonoBehaviour:
   handRingTip: {fileID: 2517589362712732556}
   handPinkyTip: {fileID: 556430267514304218}
   ignoreWristRotation: 0
-  toleranceAngle: 30
+  toleranceAngle: 20
   ignoreWristPosition: 0
   toleranceRadius: 0.1
   debugDrawBones: 1

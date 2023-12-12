@@ -55,13 +55,13 @@ public class ShowPoseName : MonoBehaviour
         }
     }
 
-    public void OnEnter(IHandGesture gesture)
+    public void OnEnter(Gesture gesture)
     {
         textMesh.text = gesture.GetDisplayName();
         currentTime = displayTime;
     }
 
-    public void OnExit(IHandGesture gesture)
+    public void OnExit(Gesture gesture)
     {
         textMesh.text = "";
     }

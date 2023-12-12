@@ -72,7 +72,7 @@ public class MaterialSwap : MonoBehaviour
         }
     }
 
-    public void OnEnter(IHandGesture gesture)
+    public void OnEnter(Gesture gesture)
     {
         currentTime = displayTime;
         meshRend.material = matOn;

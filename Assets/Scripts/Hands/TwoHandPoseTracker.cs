@@ -6,12 +6,12 @@ using UnityEngine.Events;
 
 public class TwoHandPoseTracker : MonoBehaviour
 {
-    [SerializeField] HandPoseTracker leftTracker;
-    [SerializeField] HandPoseTracker rightTracker;
+    public HandPoseTracker leftTracker;
+    public HandPoseTracker rightTracker;
 
     [SerializeField] List<TwoHandGesture> twoHandGestureList = new List<TwoHandGesture>();
 
-    public UnityEvent<IHandGesture> OnGestureEnter;
+    public UnityEvent<Gesture> OnGestureEnter;
 
     private void Update()
     {

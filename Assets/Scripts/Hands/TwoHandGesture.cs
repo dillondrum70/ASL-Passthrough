@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Two Hand Gesture", menuName = "Signs/Two Hand Gesture")]
-public class TwoHandGesture : ScriptableObject, IHandGesture
+public class TwoHandGesture : Gesture
 {
     [SerializeField] string displayName = "";
 
@@ -14,9 +14,9 @@ public class TwoHandGesture : ScriptableObject, IHandGesture
     //Max number of seconds between each gesture completed to still accept
     [SerializeField] protected float timeBetweenHandsTolerance = .5f;
 
-    public UnityEvent<IHandGesture> OnEnter;
+    public UnityEvent<Gesture> OnEnter;
 
-    public string GetDisplayName() { return displayName; }
+    public override string GetDisplayName() { return displayName; }
     public HandGesture GetLeftHandGesture() { return leftHandGesture; }
     public HandGesture GetRightHandGesture() { return rightHandGesture; }
 

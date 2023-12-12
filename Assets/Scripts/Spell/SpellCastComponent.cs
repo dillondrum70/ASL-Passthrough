@@ -3,23 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct Spell
-{
-    public List<HandGesture> gestures;
-    [HideInInspector]
-    public List<HandGesture> reversedGestures;
-    public SpellEffect effect;
-}
 
-public class SpellSignScript : MonoBehaviour
+
+public class SpellCastComponent : MonoBehaviour
 {
-    HandPoseTracker handPoseTracker;
+    TwoHandPoseTracker twoHandPoseTracker;
 
     [SerializeField] List<Spell> spells;
 
     //Most recent signs inserted at index 0
-    List<HandGesture> recentHandGestures = new List<HandGesture>();
+    List<Gesture> recentHandGestures = new List<Gesture>();
 
     //Seconds to wait before allowing the same sign again
     [SerializeField] float signDelay = 1f;
@@ -41,13 +34,18 @@ public class SpellSignScript : MonoBehaviour
 
     private void OnEnable()
     {
-        handPoseTracker = GetComponent<HandPoseTracker>();
-        handPoseTracker.OnGestureEnter.AddListener(AddRecentGesture);
+        twoHandPoseTracker = GetComponent<TwoHandPoseTracker>();
+        twoHandPoseTracker.OnGestureEnter.AddListener(AddRecentGesture);
+        twoHandPoseTracker.leftTracker.OnGestureEnter.AddListener(AddRecentGesture);
+        twoHandPoseTracker.rightTracker.OnGestureEnter.AddListener(AddRecentGesture);
+        
     }
 
     private void OnDisable()
     {
-        handPoseTracker.OnGestureEnter.RemoveListener(AddRecentGesture);
+        twoHandPoseTracker.OnGestureEnter.RemoveListener(AddRecentGesture);
+        twoHandPoseTracker.leftTracker.OnGestureEnter.RemoveListener(AddRecentGesture);
+        twoHandPoseTracker.rightTracker.OnGestureEnter.RemoveListener(AddRecentGesture);
     }
 
     private void Update()
@@ -59,7 +57,7 @@ public class SpellSignScript : MonoBehaviour
         }
     }
 
-    void AddRecentGesture(HandGesture handGesture)
+    void AddRecentGesture(Gesture handGesture)
     {
         if(recentHandGestures.Count > 0 &&          //Check there is a count
             recentHandGestures[0] == handGesture && //if current gesture equals the one on top

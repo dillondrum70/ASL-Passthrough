@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 58090608}
   - component: {fileID: 58090607}
+  - component: {fileID: 58090609}
   m_Layer: 0
   m_Name: GestureTracker
   m_TagString: Untagged
@@ -180,6 +181,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &58090609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58090606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a94894b3a4c7024490d13e1d38f52d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spells:
+  - gestures:
+    - {fileID: 11400000, guid: 12994baf4edf0d84cb1a83303ded153c, type: 2}
+    reversedGestures: []
+    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
+  - gestures:
+    - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
+    - {fileID: 11400000, guid: e51deb8408a8b4e4b820600e4cefecaf, type: 2}
+    - {fileID: 11400000, guid: ece1c282075b1ec48b0ae3c2dcf978b6, type: 2}
+    reversedGestures: []
+    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
+  signDelay: 1
+  spellSpawnPoint: {fileID: 668911362}
 --- !u!4 &89204951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4001605307124674, guid: e201a24a09e942042b93390d0444d728, type: 3}
@@ -644,29 +670,8 @@ MonoBehaviour:
   handPositionMarkerPrefab: {fileID: 6866104674125667815, guid: 209ba5d788ae72346ad5b6d8ba74ed56, type: 3}
   debugDisplayHandPose: 1
   debugDisplayHandTime: 4
-  modifyEditorHandPose: 1
+  modifyEditorHandPose: 0
   currentEditorHandPose: {fileID: -6202488916469461938, guid: fc32ddc3e3058504c8d1be6f8c743fba, type: 3}
---- !u!114 &262839957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 262839951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a94894b3a4c7024490d13e1d38f52d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spells:
-  - gestures:
-    - {fileID: 11400000, guid: 7b3295dbbbfbd8140b2aa4b45698ca03, type: 2}
-    - {fileID: 11400000, guid: c33a98011da58e643b2be1af30270af1, type: 2}
-    - {fileID: 11400000, guid: 16d19d7a530e74647a8b3e0733db8a24, type: 2}
-    reversedGestures: []
-    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
-  signDelay: 1.5
-  spellSpawnPoint: {fileID: 668911362}
 --- !u!1 &301219495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: isInsightPassthroughEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2439,15 +2444,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 262839954}
-    - targetCorrespondingSourceObject: {fileID: 3300481182600350988, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 262839957}
     - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2118942617}
-    - targetCorrespondingSourceObject: {fileID: 6303876424925650174, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2118942620}
   m_SourcePrefab: {fileID: 100100000, guid: ea16c3c8c1688234fa81a4f39339bf1b, type: 3}
 --- !u!1 &2118942616 stripped
 GameObject:
@@ -2550,27 +2549,6 @@ MonoBehaviour:
   debugDisplayHandTime: 4
   modifyEditorHandPose: 0
   currentEditorHandPose: {fileID: -6202488916469461938, guid: 44d4778486b65114ab975d9e13612a20, type: 3}
---- !u!114 &2118942620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2118942616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a94894b3a4c7024490d13e1d38f52d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spells:
-  - gestures:
-    - {fileID: 11400000, guid: 8b1757984a88af241aefb4e69141fcaa, type: 2}
-    - {fileID: 11400000, guid: e51deb8408a8b4e4b820600e4cefecaf, type: 2}
-    - {fileID: 11400000, guid: ece1c282075b1ec48b0ae3c2dcf978b6, type: 2}
-    reversedGestures: []
-    effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
-  signDelay: 1.5
-  spellSpawnPoint: {fileID: 668911362}
 --- !u!1001 &7585291731239725634
 PrefabInstance:
   m_ObjectHideFlags: 0
