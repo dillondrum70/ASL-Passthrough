@@ -45,7 +45,6 @@ public class HandGesture : Gesture
             if (poses[i] != stack[i].pose ||
                 stack[i].timeBetweenPoses > nullTimeTolerance)  //Too much null time between key poses
             {
-                Debug.Log($"{stack[i].timeBetweenPoses} > {nullTimeTolerance} ");
                 match = false;
                 break;
             }

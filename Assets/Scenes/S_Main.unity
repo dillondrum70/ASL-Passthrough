@@ -204,7 +204,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ece1c282075b1ec48b0ae3c2dcf978b6, type: 2}
     reversedGestures: []
     effect: {fileID: 4247319754249842242, guid: b82cde36d31074b488cd925946499e14, type: 3}
-  signDelay: 1
+  sameSignDelay: 1
+  maxTimeBetweenGestures: 1
   spellSpawnPoint: {fileID: 668911362}
 --- !u!4 &89204951 stripped
 Transform:
@@ -624,7 +625,6 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: ac9c6a000fcee384f98d925d12fbbc04, type: 3}
   - {fileID: -6202488916469461938, guid: 4dd64d620ea23cc4a92c4b910c388264, type: 3}
   handGestureList:
-  - {fileID: 11400000, guid: a6b1b66bd428d90458bdb03f6ef5d5d9, type: 2}
   - {fileID: 11400000, guid: 628e4b66e84e1464480538125db473ab, type: 2}
   - {fileID: 11400000, guid: aa166cca1e279b1409b9fb5b8686cc97, type: 2}
   - {fileID: 11400000, guid: a48d04188af2a4e43b589fd00ab8d48f, type: 2}
@@ -2500,7 +2500,6 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: d7f4d2f8b53932941a0e3eb31aeba34a, type: 3}
   - {fileID: -6202488916469461938, guid: 37d0379f5a393574f83b19fa9ced2dc1, type: 3}
   handGestureList:
-  - {fileID: 11400000, guid: 85b2e32c14ccffe48809de84b73072e7, type: 2}
   - {fileID: 11400000, guid: 272ba269eb396a8439d687aaaf01524f, type: 2}
   - {fileID: 11400000, guid: d55535697d6b8fc4e9ee1ead2832da9d, type: 2}
   - {fileID: 11400000, guid: 776a20a6585052045b8a32c015551926, type: 2}

@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct GestureData
+{
+    public Gesture gesture;     //Gesture in question
+    public float elapsedTime;   //Time before next gesture was made
+}
+
 public class SpellCastComponent : MonoBehaviour
 {
     TwoHandPoseTracker twoHandPoseTracker;
@@ -10,11 +16,14 @@ public class SpellCastComponent : MonoBehaviour
     [SerializeField] List<Spell> spells;
 
     //Most recent signs inserted at index 0
-    public List<Gesture> recentHandGestures = new List<Gesture>();
+    public List<GestureData> recentHandGestures = new List<GestureData>();
 
     //Seconds to wait before allowing the same sign again
-    [SerializeField] float signDelay = 1f;
+    [SerializeField] float sameSignDelay = 1f;
     float currentDelay = 0f;
+
+    //Max time between gestures before they are rejected as part of the same spell
+    [SerializeField] float maxTimeBetweenGestures = 1f;
 
     [SerializeField] Transform spellSpawnPoint;
 
@@ -53,23 +62,36 @@ public class SpellCastComponent : MonoBehaviour
         {
             currentDelay -= Time.deltaTime;
         }
+
+        //Incremenet elapsed time on most recent hand gesture
+        if(recentHandGestures.Count > 0)
+        {
+            GestureData data = recentHandGestures[0];
+            data.elapsedTime += Time.deltaTime;
+            recentHandGestures[0] = data;
+        }
     }
 
     void AddRecentGesture(Gesture handGesture)
     {
         if(recentHandGestures.Count > 0 &&          //Check there is a count
-            recentHandGestures[0] == handGesture && //if current gesture equals the one on top
+            recentHandGestures[0].gesture == handGesture && //if current gesture equals the one on top
             currentDelay > 0)                       //and currentDelay has not elapsed
         {
             //Then do nothing
             return;
         }
 
+        //Otherwise we have a new gesture
+        GestureData newData = new GestureData();
+        newData.gesture = handGesture;
+        newData.elapsedTime = Time.deltaTime;
+
         //Add gesture to list
-        recentHandGestures.Insert(0, handGesture);
+        recentHandGestures.Insert(0, newData);
         Debug.Log($"Add gesture - {recentHandGestures.Count}");
 
-        currentDelay = signDelay;
+        currentDelay = sameSignDelay;
 
         //Iterate over all spells
         foreach (Spell spellEffect in spells)
@@ -86,7 +108,8 @@ public class SpellCastComponent : MonoBehaviour
             for (int i = 0; i < spellEffect.reversedGestures.Count; i++)
             {
                 //Exit loop if a pose does not match, move to next pose or exit and accept if at end of pose list
-                if (spellEffect.reversedGestures[i] != recentHandGestures[i])
+                if (spellEffect.reversedGestures[i] != recentHandGestures[i].gesture ||
+                    recentHandGestures[i].elapsedTime > maxTimeBetweenGestures)
                 {
                     match = false;
                     break;

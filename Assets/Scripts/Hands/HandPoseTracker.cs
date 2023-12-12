@@ -12,7 +12,6 @@ using System;
 /// <summary>
 /// Data about a hand pose in a specific frame
 /// </summary>
-[Serializable]
 public struct HandPoseData
 {
     public float startTime;         //Time at which this hand pose was first made
@@ -31,7 +30,7 @@ public class HandPoseTracker : MonoBehaviour
     [SerializeField] public List<HandPose> handPoseList;
     [SerializeField] public List<HandGesture> handGestureList;
 
-    public List<HandPoseData> handPoseDataStack = new List<HandPoseData>();
+    List<HandPoseData> handPoseDataStack = new List<HandPoseData>();
 
     public IHand handCurrent;       //Hand script, RightHand under OVRHands
     public HandVisual handVisual;   //Visual under handCurrent
@@ -46,7 +45,7 @@ public class HandPoseTracker : MonoBehaviour
     public UnityEvent<HandPose> OnPoseExit;
 
     //Generic events fired for every gesture
-    public UnityEvent<HandGesture> OnGestureEnter;
+    public UnityEvent<HandGesture> OnGestureEnter = new();
 
     //Determines if hand is making a pose currently or not
     bool inPose = false;
