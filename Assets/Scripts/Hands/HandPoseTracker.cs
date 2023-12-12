@@ -66,6 +66,8 @@ public class HandPoseTracker : MonoBehaviour
 #endif
 
     public Transform GetPalmTransform() { return palmTransform; }
+    public List<HandPoseData> GetStack() { return handPoseDataStack; }
+    public void ClearStack() { handPoseDataStack.Clear(); }
 
     private void Start()
     {
@@ -94,17 +96,17 @@ public class HandPoseTracker : MonoBehaviour
         }
 #endif
 
-        GetHandPose();
+        //GetHandPose();
 
-        //Do nothing if current pose is null
-        if (currentPose != null)
-        {
-            UpdateStack();
+        ////Do nothing if current pose is null
+        //if (currentPose != null)
+        //{
+        //    UpdateStack();
 
-            CheckSingleHandGesture();
-        }
+        //    CheckSingleHandGesture();
+        //}
 
-        UpdateDisplayHandPose();
+        //UpdateDisplayHandPose();
     }
 
     /// <summary>
@@ -175,44 +177,28 @@ public class HandPoseTracker : MonoBehaviour
     /// <summary>
     /// Logic for checking most recent poses against the known list of gestures
     /// </summary>
-    public void CheckSingleHandGesture()
+    /// <returns>Whether or not a gesture matched</returns>
+    public bool CheckSingleHandGesture()
     {
-        if (currentPose == null) { return; }
+        if (currentPose == null) { return false; }
 
         //NOT PERFORMANT, lots of loops as you add more poses
         //Maybe try a system that uses a temp list and goes through all wrist bones in each pose, remove any hand poses that don't match,
         //then continue to the next pose node but only for the HandPoses that matched at the wrist
         foreach (HandGesture gesture in handGestureList)
         {
-            List<HandPose> poses = new(gesture.GetHandPoseList());
-            poses.Reverse();
-
-            //Check last pose hold time of gesture is shorter than we've been holding this pose
-            if (handPoseDataStack.Count < poses.Count || gesture.GetLastPoseHoldTime() > handPoseDataStack[0].currentTime)
-            {
-                //Skip this gesture
-                continue;
-            }
-
-            //Check order of poses, ensure they match the most recent poses in the stack
-            bool match = true;
-            for (int i = 0; i < poses.Count; i++)
-            {
-                //Exit loop if stack is shorter than pose list or a pose does not match, move to next pose or exit and accept if at end of pose list
-                if (poses[i] != handPoseDataStack[i].pose)
-                {
-                    match = false;
-                    break;
-                }
-            }
+            bool match = gesture.MatchGesture(handPoseDataStack);
 
             //All poses match
             if (match)
             {
                 OnGestureEnter?.Invoke(gesture);
                 handPoseDataStack.Clear();
+                return true;
             }
         }
+
+        return false;
     }
 
     /// <summary>
@@ -239,7 +225,7 @@ public class HandPoseTracker : MonoBehaviour
     /// <summary>
     /// Update position and rotation of the displayed hand pose
     /// </summary>
-    void UpdateDisplayHandPose()
+    public void UpdateDisplayHandPose()
     {
         if (debugDisplayHandPose && //If settings allow for display hand and display pose is valid, move it
             displayPose != null)

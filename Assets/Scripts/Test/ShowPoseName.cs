@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static OVRPlugin;
 
 public class ShowPoseName : MonoBehaviour
 {
     [SerializeField] List<HandPoseTracker> trackers;
+    [SerializeField] TwoHandPoseTracker twoHandPoseTracker;
 
     TextMeshProUGUI textMesh;
 
@@ -26,6 +28,8 @@ public class ShowPoseName : MonoBehaviour
             tracker.OnGestureEnter.AddListener(OnEnter);
             //handPoseTracker.OnPoseExit.AddListener(OnExit);
         }
+
+        twoHandPoseTracker.OnGestureEnter.AddListener(OnEnter);
     }
 
     private void OnDisable()
@@ -36,6 +40,7 @@ public class ShowPoseName : MonoBehaviour
             //handPoseTracker.OnPoseExit.RemoveListener(OnExit);
         }
 
+        twoHandPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
     }
 
     private void Update()
@@ -50,13 +55,13 @@ public class ShowPoseName : MonoBehaviour
         }
     }
 
-    public void OnEnter(HandGesture gesture)
+    public void OnEnter(IHandGesture gesture)
     {
         textMesh.text = gesture.GetDisplayName();
         currentTime = displayTime;
     }
 
-    public void OnExit(HandGesture gesture)
+    public void OnExit(IHandGesture gesture)
     {
         textMesh.text = "";
     }

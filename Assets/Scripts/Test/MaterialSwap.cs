@@ -9,6 +9,7 @@ public class MaterialSwap : MonoBehaviour
     MeshRenderer meshRend;
 
     [SerializeField] List<HandPoseTracker> handPoseTrackers;
+    [SerializeField] TwoHandPoseTracker twoHandPoseTracker;
 
     [SerializeField] string redPoseName = "";
 
@@ -36,6 +37,8 @@ public class MaterialSwap : MonoBehaviour
                 //redPose.OnPoseExit.AddListener(OnExit);
             }
         }
+
+        twoHandPoseTracker.OnGestureEnter.AddListener(OnEnter);
     }
 
     private void OnDisable()
@@ -53,6 +56,8 @@ public class MaterialSwap : MonoBehaviour
                 //redPose.OnPoseExit.RemoveListener(OnExit);
             }
         }
+
+        twoHandPoseTracker.OnGestureEnter.RemoveListener(OnEnter);
     }
 
     private void Update()
@@ -67,7 +72,7 @@ public class MaterialSwap : MonoBehaviour
         }
     }
 
-    public void OnEnter(HandGesture gesture)
+    public void OnEnter(IHandGesture gesture)
     {
         currentTime = displayTime;
         meshRend.material = matOn;

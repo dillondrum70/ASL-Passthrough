@@ -128,6 +128,57 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4360771558957118, guid: e201a24a09e942042b93390d0444d728, type: 3}
   m_PrefabInstance: {fileID: 127637917}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &58090606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 58090608}
+  - component: {fileID: 58090607}
+  m_Layer: 0
+  m_Name: GestureTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &58090607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58090606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb1263063681e446a6c8465f121ccaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftTracker: {fileID: 262839954}
+  rightTracker: {fileID: 2118942617}
+  twoHandGestureList:
+  - {fileID: 11400000, guid: 000b3fe657e63a141b46b0e7baa82a07, type: 2}
+  OnGestureEnter:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &58090608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58090606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.7917333, y: -9.193377, z: 15.320841}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &89204951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4001605307124674, guid: e201a24a09e942042b93390d0444d728, type: 3}
@@ -542,6 +593,8 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: 08f8a8ad1acbd9c488d7e71a3103cc25, type: 3}
   - {fileID: -6202488916469461938, guid: 3826bc1c20fb66b4d8d53e236dd45ac8, type: 3}
   - {fileID: -6202488916469461938, guid: de230d1721971164a9b4d3bab1c45920, type: 3}
+  - {fileID: -6202488916469461938, guid: fc32ddc3e3058504c8d1be6f8c743fba, type: 3}
+  - {fileID: -6202488916469461938, guid: ee9c9b9a5e34b804fa5298c763d5564c, type: 3}
   handGestureList:
   - {fileID: 11400000, guid: a6b1b66bd428d90458bdb03f6ef5d5d9, type: 2}
   - {fileID: 11400000, guid: 628e4b66e84e1464480538125db473ab, type: 2}
@@ -589,7 +642,7 @@ MonoBehaviour:
   debugDisplayHandPose: 1
   debugDisplayHandTime: 4
   modifyEditorHandPose: 1
-  currentEditorHandPose: {fileID: -6202488916469461938, guid: 9faa8af0f088a074fbd778a72d78bb1c, type: 3}
+  currentEditorHandPose: {fileID: -6202488916469461938, guid: fc32ddc3e3058504c8d1be6f8c743fba, type: 3}
 --- !u!114 &262839957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,6 +814,7 @@ MonoBehaviour:
   trackers:
   - {fileID: 2118942617}
   - {fileID: 262839954}
+  twoHandPoseTracker: {fileID: 58090607}
   displayTime: 2
 --- !u!4 &309700193 stripped
 Transform:
@@ -1402,6 +1456,7 @@ MonoBehaviour:
   handPoseTrackers:
   - {fileID: 2118942617}
   - {fileID: 262839954}
+  twoHandPoseTracker: {fileID: 58090607}
   redPoseName: Rock & Roll
   displayTime: 2
 --- !u!4 &889137270 stripped
@@ -2440,6 +2495,8 @@ MonoBehaviour:
   - {fileID: -6202488916469461938, guid: a46da75345e5b5d47b49a53092b3f0f8, type: 3}
   - {fileID: -6202488916469461938, guid: 4d3514c6cd81e2d49ba9d22c743387c2, type: 3}
   - {fileID: -6202488916469461938, guid: 47b85730df30088468b936e40d907a64, type: 3}
+  - {fileID: -6202488916469461938, guid: 57a11cd0b1194e94bb4e3dd952d6a5b7, type: 3}
+  - {fileID: -6202488916469461938, guid: ca6b2b9c827326c4f807f012d9d04dfc, type: 3}
   handGestureList:
   - {fileID: 11400000, guid: 85b2e32c14ccffe48809de84b73072e7, type: 2}
   - {fileID: 11400000, guid: 272ba269eb396a8439d687aaaf01524f, type: 2}
@@ -2575,6 +2632,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 866895163}
+  - {fileID: 58090608}
   - {fileID: 1783988942}
   - {fileID: 7585291731239725634}
   - {fileID: 877941302}
