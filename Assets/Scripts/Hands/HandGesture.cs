@@ -9,7 +9,7 @@ public class HandGesture : ScriptableObject
 {
     [SerializeField] string displayName = "";
 
-    [SerializeField] List<HandPose> handPoseList;
+    [SerializeField] protected List<HandPose> handPoseList;
 
     //How long to hold on the last position for it to accept (i.e. I pose might be a little longer so it doesn't get confused with J pose)
     [SerializeField] float lastPoseHoldTime = .2f;
